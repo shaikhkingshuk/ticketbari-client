@@ -1,17 +1,50 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import useTheme from "../hooks/useTheme";
+import { AuthContext } from "../context/AuthContext";
+import { Link, useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export const Header = () => {
+  const { user, loading, logOut } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  // console.log(user);
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        toast.success("Logged out successfully");
+        navigate("/login");
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
+
+  if (loading) {
+    return (
+      <div className="h-16 flex items-center justify-center">Loading...</div>
+    );
+  }
 
   return (
-    <nav className="bg-white">
+    <nav className="bg-white relative">
       <div className="mx-auto max-w-7xl pr-6 pl-2 b-2 bg-blue-50 rounded-full mt-2">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-0">
+            <button
+              className="md:hidden text-2xl text-black pl-3"
+              onClick={() => setOpen(!open)}
+            >
+              ☰
+            </button>
             <img src="./logo.png" alt="ticketbari logo" className="w-15" />
-            <span className="text-xl font-bold text-gray-800">TicketBari</span>
+            <span className="hidden sm:inline text-xl font-bold text-gray-800">
+              TicketBari
+            </span>
           </div>
 
           <div className="hidden md:flex items-center gap-6">
@@ -29,42 +62,68 @@ export const Header = () => {
             </a>
           </div>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className="flex items-center gap-3 ">
             <input
               type="checkbox"
               value="dark"
-              className="toggle theme-controller mr-6 text-gray-600 "
+              className="toggle theme-controller mr-2 text-gray-600 "
               checked={theme === "dark"}
               onChange={(e) => toggleTheme(e.target.checked)}
             />
-            <button className="rounded-md border px-4 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100">
-              Login
-            </button>
-            <button className="rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700">
-              Sign Up
-            </button>
-          </div>
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="flex items-center gap-2  px-3 py-1.5 rounded-md hover:bg-gray-100"
+                >
+                  <img
+                    src={user.photoURL}
+                    alt="user"
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <span className="text-gray-700 hidden sm:inline">
+                    {user.displayName}
+                  </span>
+                </button>
 
-          <div className="md:hidden flex items-center">
-            <input
-              type="checkbox"
-              value="dark"
-              className="toggle theme-controller mr-6 text-gray-600"
-              checked={theme === "dark"}
-              onChange={(e) => toggleTheme(e.target.checked)}
-            />
-            <button
-              className=" text-2xl text-black"
-              onClick={() => setOpen(!open)}
-            >
-              ☰
-            </button>
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-4 w-40 bg-blue-100 rounded-md shadow-md">
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
+                      Profile
+                    </Link>
+
+                    <Link
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Logout
+                    </Link>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex gap-3">
+                <Link to="/login" className="rounded-md border px-4 py-1.5">
+                  Login
+                </Link>
+
+                <Link
+                  to="/signup"
+                  className="rounded-md bg-blue-600 px-4 py-1.5 text-white"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       {open && (
-        <div className="md:hidden border border-gray-600 inline-block m-2 rounded-2xl bg-white">
+        <div className="md:hidden absolute z-999 inline-block px-5 m-2 rounded-2xl bg-blue-100">
           <div className="flex flex-col gap-4 px-4 py-4">
             <a href="#" className="text-gray-700">
               All Tickets
@@ -75,15 +134,6 @@ export const Header = () => {
             <a href="#" className="text-gray-700">
               Support
             </a>
-
-            <div className="mt-2 flex gap-3">
-              <button className="rounded-md border px-4 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100">
-                Login
-              </button>
-              <button className="rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700">
-                Sign Up
-              </button>
-            </div>
           </div>
         </div>
       )}
