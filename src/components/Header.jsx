@@ -3,6 +3,7 @@ import useTheme from "../hooks/useTheme";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import logo from "../assets/logo.png";
 
 export const Header = () => {
   const { user, loading, logOut } = useContext(AuthContext);
@@ -41,7 +42,7 @@ export const Header = () => {
             >
               ☰
             </button>
-            <img src="./logo.png" alt="ticketbari logo" className="w-15" />
+            <img src={logo} alt="ticketbari logo" className="w-15" />
             <span className="hidden sm:inline text-xl font-bold text-gray-800">
               TicketBari
             </span>
@@ -77,12 +78,17 @@ export const Header = () => {
                   className="flex items-center gap-2  px-3 py-1.5 rounded-md hover:bg-gray-100"
                 >
                   <img
-                    src={user.photoURL}
+                    src={
+                      user?.photoURL
+                        ? user.photoURL
+                        : "https://i.ibb.co/ZxQJk0K/user.png"
+                    }
                     alt="user"
                     className="w-8 h-8 rounded-full"
                   />
+                  {/* {console.log(user?.photoURL)} */}
                   <span className="text-gray-700 hidden sm:inline">
-                    {user.displayName}
+                    {user?.displayName}
                   </span>
                 </button>
 

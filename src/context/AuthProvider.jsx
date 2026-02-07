@@ -14,29 +14,24 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
   // For Registeration
   const createUser = (email, password) => {
-    setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   // For normal signIn
   const signIn = (email, password) => {
-    setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   // For Google Sign-in
   const googleSignIn = () => {
-    setLoading(true);
     const provider = new GoogleAuthProvider();
     return signInWithPopup(auth, provider);
   };
 
   // For Logout
   const logOut = () => {
-    setLoading(true);
     return signOut(auth);
   };
 

@@ -4,7 +4,7 @@ import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 
@@ -19,8 +19,6 @@ export const Login = () => {
   const [show, setShow] = useState(false);
   const emailRef = useRef(null);
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state || "/";
 
   // Email Login
   const handleLogin = (e) => {
@@ -30,8 +28,20 @@ export const Login = () => {
 
     signIn(email, password)
       .then(() => {
-        toast.success("Logged in successfully");
-        navigate(from);
+        fetch(`http://localhost:3000/users/${email}`)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            if (data.role === "admin") {
+              navigate("/dashboard/admin");
+            } else if (data.role === "vendor") {
+              navigate("/dashboard/vendor");
+            } else {
+              navigate("/dashboard/user");
+            }
+
+            toast.success("Logged in successfully");
+          });
       })
       .catch((error) => toast.error(error.code));
   };
@@ -39,11 +49,40 @@ export const Login = () => {
   // Google Login
   const handleGoogleSignIn = () => {
     googleSignIn()
-      .then(() => {
-        toast.success("Logged in with Google");
-        navigate(from);
+      .then((result) => {
+        const user = result.user;
+
+        fetch(`http://localhost:3000/users/${user.email}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data === null) {
+              const userInfo = {
+                uid: user.uid,
+                email: user.email,
+                name: user.displayName,
+                photoURL: user.photoURL,
+              };
+
+              fetch("http://localhost:3000/users", {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(userInfo),
+              }).then(() => {
+                navigate("/dashboard/user");
+                toast.success("Account created with Google");
+              });
+            } else {
+              if (data.role === "admin") navigate("/dashboard/admin");
+              else if (data.role === "vendor") navigate("/dashboard/vendor");
+              else navigate("/dashboard/user");
+
+              toast.success("Logged in with Google");
+            }
+          });
       })
-      .catch((error) => toast.error(error.code));
+      .catch((error) => toast.error(error.message));
   };
 
   return (

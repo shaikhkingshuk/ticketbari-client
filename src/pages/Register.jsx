@@ -45,15 +45,39 @@ export const Register = () => {
     }
 
     createUser(email, password)
-      .then((result) =>
-        updateProfile(result.user, {
+      .then((result) => {
+        const user = result.user;
+
+        return updateProfile(user, {
           displayName,
           photoURL,
-        }),
-      )
+        }).then(() => user);
+      })
+      .then((user) => {
+        const userInfo = {
+          uid: user.uid,
+          email,
+          name: displayName,
+          photoURL,
+        };
+
+        return fetch("http://localhost:3000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(userInfo),
+        });
+      })
+      .then((res) => {
+        if (res.status === 409) {
+          throw new Error("Email already exists");
+        }
+        return res.json();
+      })
       .then(() => {
         toast.success("Account created successfully");
-        navigate("/");
+        navigate("/dashboard/user");
       })
       .catch((error) => toast.error(error.message));
   };
@@ -61,11 +85,40 @@ export const Register = () => {
   // Google Register
   const handleGoogleSignIn = () => {
     googleSignIn()
-      .then(() => {
-        toast.success("Signed up with Google successfully");
-        navigate("/");
+      .then((result) => {
+        const user = result.user;
+
+        fetch(`http://localhost:3000/users/${user.email}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data === null) {
+              const userInfo = {
+                uid: user.uid,
+                email: user.email,
+                name: user.displayName,
+                photoURL: user.photoURL,
+              };
+
+              fetch("http://localhost:3000/users", {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(userInfo),
+              }).then(() => {
+                navigate("/dashboard/user");
+                toast.success("Account created with Google");
+              });
+            } else {
+              if (data.role === "admin") navigate("/dashboard/admin");
+              else if (data.role === "vendor") navigate("/dashboard/vendor");
+              else navigate("/dashboard/user");
+
+              toast.success("Logged in with Google");
+            }
+          });
       })
-      .catch((error) => toast.error(error.code));
+      .catch((error) => toast.error(error.message));
   };
 
   return (
