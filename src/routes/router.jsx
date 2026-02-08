@@ -5,6 +5,7 @@ import { Register } from "../pages/Register";
 import { UserDashboard } from "../pages/UserDashboard";
 import { VendorDashboard } from "../pages/VendorDashboard";
 import { AdminDashboard } from "../pages/AdminDashboard";
+import { AddTicket } from "../pages/vendorsDashboard/AddTicket";
 
 export const router = createBrowserRouter([
   {
@@ -21,15 +22,21 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/user",
-        element: <UserDashboard />,
+        element: <UserDashboard></UserDashboard>,
       },
       {
         path: "/dashboard/vendor",
-        element: <VendorDashboard />,
+        element: <VendorDashboard></VendorDashboard>,
+        children: [
+          {
+            path: "/dashboard/vendor/addTicket",
+            element: <AddTicket></AddTicket>,
+          },
+        ],
       },
       {
         path: "/dashboard/admin",
-        element: <AdminDashboard />,
+        element: <AdminDashboard></AdminDashboard>,
       },
     ],
   },
