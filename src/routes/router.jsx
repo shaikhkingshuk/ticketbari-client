@@ -6,6 +6,7 @@ import { UserDashboard } from "../pages/UserDashboard";
 import { VendorDashboard } from "../pages/VendorDashboard";
 import { AdminDashboard } from "../pages/AdminDashboard";
 import { AddTicket } from "../pages/vendorsDashboard/AddTicket";
+import { MyAddedTickets } from "../pages/vendorsDashboard/MyAddedTickets";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
           {
             path: "/dashboard/vendor/addTicket",
             element: <AddTicket></AddTicket>,
+          },
+          {
+            path: "/dashboard/vendor/myAddedTickets",
+            element: <MyAddedTickets></MyAddedTickets>,
           },
         ],
       },
