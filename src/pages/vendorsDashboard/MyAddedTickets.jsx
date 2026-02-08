@@ -6,6 +6,92 @@ export const MyAddedTickets = () => {
   const { user } = useContext(AuthContext);
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [perks, setPerks] = useState([]);
+
+  const divisions = [
+    "Dhaka",
+    "Chattogram",
+    "Rajshahi",
+    "Khulna",
+    "Barishal",
+    "Sylhet",
+    "Rangpur",
+    "Mymensingh",
+  ];
+
+  const image_host_key = import.meta.env.VITE_image_host;
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+
+    let imageURL = selectedTicket.image;
+
+    // Upload new image only if selected
+    if (form.image.files[0]) {
+      const imageData = new FormData();
+      imageData.append("image", form.image.files[0]);
+
+      const imgRes = await fetch(
+        `https://api.imgbb.com/1/upload?key=${image_host_key}`,
+        {
+          method: "POST",
+          body: imageData,
+        },
+      );
+
+      const imgData = await imgRes.json();
+      if (!imgData.success) {
+        return toast.error("Image upload failed");
+      }
+
+      imageURL = imgData.data.display_url;
+    }
+
+    const updatedTicket = {
+      title: form.title.value,
+      from: form.from.value,
+      to: form.to.value,
+      transportType: form.transportType.value,
+      price: Number(form.price.value),
+      quantity: Number(form.quantity.value),
+      departureDateTime: form.departureDateTime.value,
+      perks,
+      image: imageURL,
+    };
+
+    const res = await fetch(
+      `http://localhost:3000/tickets/${selectedTicket._id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(updatedTicket),
+      },
+    );
+
+    if (res.ok) {
+      toast.success("Ticket updated successfully");
+
+      setTickets((prev) =>
+        prev.map((t) =>
+          t._id === selectedTicket._id
+            ? {
+                ...t,
+                ...updatedTicket,
+                verificationStatus: "pending",
+              }
+            : t,
+        ),
+      );
+
+      setSelectedTicket(null);
+    } else {
+      toast.error("Update failed");
+    }
+  };
 
   useEffect(() => {
     if (!user?.email) return;
@@ -105,8 +191,11 @@ export const MyAddedTickets = () => {
                 {/* ACTIONS */}
                 <div className="mt-4 grid grid-cols-2 gap-3">
                   <button
-                    disabled={ticket.verificationStatus === "rejected"}
-                    className="btn btn-sm btn-outline disabled:opacity-50"
+                    className="btn btn-sm btn-warning"
+                    onClick={() => {
+                      setSelectedTicket(ticket);
+                      setPerks(ticket.perks || []);
+                    }}
                   >
                     Update
                   </button>
@@ -122,6 +211,118 @@ export const MyAddedTickets = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+      {selectedTicket && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded shadow p-6 w-full max-w-xl">
+            <h2 className="text-2xl font-semibold mb-4 text-center">
+              Update Ticket
+            </h2>
+
+            <form onSubmit={handleUpdateSubmit} className="space-y-4">
+              <input
+                type="text"
+                name="title"
+                defaultValue={selectedTicket.title}
+                required
+                className="input input-bordered w-full"
+              />
+
+              <select
+                name="from"
+                defaultValue={selectedTicket.from}
+                className="select select-bordered w-full"
+              >
+                {divisions.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                name="to"
+                defaultValue={selectedTicket.to}
+                className="select select-bordered w-full"
+              >
+                {divisions.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                name="transportType"
+                defaultValue={selectedTicket.transportType}
+                className="select select-bordered w-full"
+              >
+                <option value="Air">Air</option>
+                <option value="Bus">Bus</option>
+                <option value="Train">Train</option>
+                <option value="Launch">Launch</option>
+              </select>
+
+              <input
+                type="number"
+                name="price"
+                defaultValue={selectedTicket.price}
+                className="input input-bordered w-full"
+              />
+
+              <input
+                type="number"
+                name="quantity"
+                defaultValue={selectedTicket.quantity}
+                className="input input-bordered w-full"
+              />
+
+              <input
+                type="datetime-local"
+                name="departureDateTime"
+                defaultValue={selectedTicket.departureDateTime?.slice(0, 16)}
+                className="input input-bordered w-full"
+              />
+
+              <div className="flex flex-wrap gap-4">
+                {["AC", "Breakfast", "WiFi"].map((perk) => (
+                  <label key={perk} className="flex gap-2">
+                    <input
+                      type="checkbox"
+                      checked={perks.includes(perk)}
+                      onChange={() =>
+                        setPerks((prev) =>
+                          prev.includes(perk)
+                            ? prev.filter((p) => p !== perk)
+                            : [...prev, perk],
+                        )
+                      }
+                    />
+                    {perk}
+                  </label>
+                ))}
+              </div>
+
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                className="file-input file-input-bordered w-full"
+              />
+
+              <div className="flex gap-3">
+                <button className="btn btn-primary flex-1">Update</button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedTicket(null)}
+                  className="btn btn-outline flex-1"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
