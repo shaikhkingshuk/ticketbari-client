@@ -9,6 +9,7 @@ import { AddTicket } from "../pages/vendorsDashboard/AddTicket";
 import { MyAddedTickets } from "../pages/vendorsDashboard/MyAddedTickets";
 import { AllTickets } from "../pages/AllTickets";
 import { TicketDetails } from "../pages/TicketDetails";
+import VendorRequestedBookings from "../pages/vendorsDashboard/VendorRequestedBookings";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
           {
             path: "/dashboard/vendor/myAddedTickets",
             element: <MyAddedTickets></MyAddedTickets>,
+          },
+          {
+            path: "/dashboard/vendor/requestedBookings",
+            element: <VendorRequestedBookings></VendorRequestedBookings>,
           },
         ],
       },

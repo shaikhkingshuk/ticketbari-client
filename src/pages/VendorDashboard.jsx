@@ -49,7 +49,7 @@ export const VendorDashboard = () => {
           </NavLink>
 
           <NavLink
-            to="requestedBookings"
+            to="/dashboard/vendor/requestedBookings"
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive
