@@ -10,6 +10,7 @@ const PaymentSuccess = () => {
     const bookingId = params.get("bookingId");
     const ticketId = params.get("ticketId");
     const quantity = params.get("quantity");
+    const transactionId = params.get("session_id"); // Stripe sends this
 
     fetch(`http://localhost:3000/bookings/pay/${bookingId}`, {
       method: "PATCH",
@@ -17,11 +18,12 @@ const PaymentSuccess = () => {
       body: JSON.stringify({
         ticketId,
         bookedQuantity: Number(quantity),
+        transactionId,
       }),
     })
       .then(() => {
         toast.success("Payment completed successfully");
-        navigate("/dashboard/user/myBookedTickets");
+        navigate("/dashboard/user/transactions");
       })
       .catch(() => toast.error("Payment confirmation failed"));
   }, [params, navigate]);

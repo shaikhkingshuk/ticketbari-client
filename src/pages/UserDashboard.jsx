@@ -36,7 +36,7 @@ export const UserDashboard = () => {
           </NavLink>
 
           <NavLink
-            to="/dashboard/user/transactionHistory"
+            to="/dashboard/user/transactions"
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive

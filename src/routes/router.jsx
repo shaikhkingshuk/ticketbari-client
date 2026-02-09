@@ -12,6 +12,8 @@ import { TicketDetails } from "../pages/TicketDetails";
 import VendorRequestedBookings from "../pages/vendorsDashboard/VendorRequestedBookings";
 import MyBookedTickets from "../pages/usersDashboard/MyBookedTickets";
 import PaymentSuccess from "../pages/usersDashboard/PaymentSuccess";
+import TransactionHistory from "../pages/usersDashboard/TransactionHistory";
+import RevenueOverview from "../pages/vendorsDashboard/RevenueOverview";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +48,10 @@ export const router = createBrowserRouter([
             path: "/dashboard/user/myBookedTickets",
             element: <MyBookedTickets></MyBookedTickets>,
           },
+          {
+            path: "/dashboard/user/transactions",
+            element: <TransactionHistory></TransactionHistory>,
+          },
         ],
       },
 
@@ -64,6 +70,10 @@ export const router = createBrowserRouter([
           {
             path: "/dashboard/vendor/requestedBookings",
             element: <VendorRequestedBookings></VendorRequestedBookings>,
+          },
+          {
+            path: "/dashboard/vendor/revenueOverview",
+            element: <RevenueOverview></RevenueOverview>,
           },
         ],
       },
