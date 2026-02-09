@@ -49,7 +49,7 @@ export const Header = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-6">
-            <a href="#" className="text-gray-600 hover:text-blue-600">
+            <a href="/allTickets" className="text-gray-600 hover:text-blue-600">
               All Tickets
             </a>
             <a
@@ -131,7 +131,7 @@ export const Header = () => {
       {open && (
         <div className="md:hidden absolute z-999 inline-block px-5 m-2 rounded-2xl bg-blue-100">
           <div className="flex flex-col gap-4 px-4 py-4">
-            <a href="#" className="text-gray-700">
+            <a href="/allTickets" className="text-gray-700">
               All Tickets
             </a>
             <a href="#" className="text-gray-700">

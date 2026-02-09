@@ -7,6 +7,8 @@ import { VendorDashboard } from "../pages/VendorDashboard";
 import { AdminDashboard } from "../pages/AdminDashboard";
 import { AddTicket } from "../pages/vendorsDashboard/AddTicket";
 import { MyAddedTickets } from "../pages/vendorsDashboard/MyAddedTickets";
+import { AllTickets } from "../pages/AllTickets";
+import { TicketDetails } from "../pages/TicketDetails";
 
 export const router = createBrowserRouter([
   {
@@ -22,9 +24,18 @@ export const router = createBrowserRouter([
         element: <Register></Register>,
       },
       {
+        path: "/allTickets",
+        element: <AllTickets></AllTickets>,
+      },
+      {
+        path: "/tickets/:id",
+        element: <TicketDetails></TicketDetails>,
+      },
+      {
         path: "/dashboard/user",
         element: <UserDashboard></UserDashboard>,
       },
+
       {
         path: "/dashboard/vendor",
         element: <VendorDashboard></VendorDashboard>,
