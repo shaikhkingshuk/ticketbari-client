@@ -66,8 +66,14 @@ export const TicketDetails = () => {
         <p>Transport: {ticket.transportType}</p>
         <p>Price: ৳{ticket.price}</p>
         <p>Available: {ticket.quantity}</p>
-        {/* <p>Perks: {ticket.perks?.map((p) => p.name).join(", ")}</p> */}
-        {console.log(ticket)}
+        <p>
+          Perks:{" "}
+          {Array.isArray(ticket.perks) && ticket.perks.length > 0
+            ? ticket.perks
+                .map((p) => (typeof p === "string" ? p : p.name))
+                .join(", ")
+            : "No perks"}
+        </p>
         <p>Departure: {departureTime.toLocaleString()}</p>
 
         <button

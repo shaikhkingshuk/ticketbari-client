@@ -1,16 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 export const UserDashboard = () => {
-  return (
-    <div className="mx-auto max-w-7xl mt-5 flex min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-100 border-r p-5">
-        <h2 className="text-xl font-semibold mb-6">User Panel</h2>
+  const [open, setOpen] = useState(false);
 
-        <nav className="flex flex-col gap-3">
+  const closeMenu = () => setOpen(false);
+
+  return (
+    <div className="mx-auto max-w-7xl min-h-screen flex relative">
+      {/* Mobile menu button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className={`lg:hidden absolute top-4 left-4 z-50 p-2 bg-blue-500 text-white rounded ${open && "fixed top-4 left-4 z-50"}  `}
+      >
+        {open ? <FaTimes /> : <FaBars />}
+      </button>
+      {/* <button
+        onClick={() => setOpen(!open)}
+        className={`
+    lg:hidden
+    p-2 bg-blue-500 text-white rounded z-50
+    ${open ? "fixed top-4 left-64" : "fixed top-4 left-4"}
+  `}
+      >
+        {open ? <FaTimes /> : <FaBars />}
+      </button> */}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed lg:static top-0 left-0 z-40
+          h-full w-64 bg-gray-100 border-r
+          transform transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0
+          pt-16 lg:pt-5
+        `}
+      >
+        <h2 className="text-xl font-semibold mb-6 px-5">User Panel</h2>
+
+        <nav className="flex flex-col gap-3 px-5">
           <NavLink
             to="profile"
+            onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive
@@ -24,6 +57,7 @@ export const UserDashboard = () => {
 
           <NavLink
             to="/dashboard/user/myBookedTickets"
+            onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive
@@ -37,6 +71,7 @@ export const UserDashboard = () => {
 
           <NavLink
             to="/dashboard/user/transactions"
+            onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive
@@ -51,7 +86,7 @@ export const UserDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 lg:ml-0">
         <Outlet />
       </main>
     </div>
