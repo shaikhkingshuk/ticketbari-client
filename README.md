@@ -1,16 +1,34 @@
-# React + Vite
+# TicketBari - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Overview
+TicketBari is a modern online ticket booking platform built with **React** and **TailwindCSS**. Users can browse and book travel tickets for buses, trains, launches, and flights. The platform supports three user roles: **User**, **Vendor**, and **Admin**, with role-specific dashboards and functionalities. 
 
-Currently, two official plugins are available:
+The frontend handles user interactions, form submissions, authentication, and integrates with the backend API for ticket management, bookings, and payments.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Live Website:** [https://ticketbaribd.netlify.app/](https://ticketbaribd.netlify.app/)
 
-## React Compiler
+## Key Features
+- Browse and search for tickets with filters (From, To, Transport Type)  
+- Role-based dashboards for **User**, **Vendor**, and **Admin**  
+- Book tickets and track bookings  
+- Stripe payment integration for secure payments  
+- Responsive UI with **TailwindCSS** and **DaisyUI**  
+- Dark and light theme toggle  
+- Dashboard analytics for vendors and admins  
+- Profile management for users and vendors  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technologies & Libraries Used
+- **React** - UI library for building the frontend  
+- **React Router** - Client-side routing  
+- **React Toastify** - Notifications for success/error messages  
+- **Firebase** - Authentication system  
+- **TailwindCSS & DaisyUI** - Styling and responsive design  
+- **Swiper** - Carousel/slider for homepage  
+- **Recharts** - Dashboard charts and analytics  
+- **Stripe & @stripe/react-stripe-js** - Payment gateway integration  
+- **React Countdown** - Countdown timers  
+- **React Icons** - UI icons  
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Lint the project
+npm run lint
