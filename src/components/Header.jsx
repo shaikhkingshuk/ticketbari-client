@@ -75,12 +75,6 @@ export const Header = () => {
             >
               All Tickets
             </Link>
-            <Link
-              to="/myTickets"
-              className="text-gray-600 dark:text-zinc-50 hover:text-black"
-            >
-              My Tickets
-            </Link>
 
             {user && dashboardPath && (
               <Link
@@ -123,7 +117,7 @@ export const Header = () => {
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-4 w-40 bg-blue-100 dark:bg-blue-600 rounded-md shadow-md z-50">
                     <Link
-                      to="/profile"
+                      to={dashboardPath}
                       onClick={closeDropdown}
                       className="block px-4 py-2 hover:bg-blue-800"
                     >
@@ -161,7 +155,7 @@ export const Header = () => {
       </div>
 
       {open && (
-        <div className="md:hidden absolute z-999 inline-block px-5 m-2 rounded-2xl bg-blue-600">
+        <div className="md:hidden absolute z-999 inline-block px-5 m-2 rounded-2xl bg-white dark:bg-blue-600">
           <div className="flex flex-col gap-4 px-4 py-4">
             <Link
               to="/"
@@ -175,12 +169,7 @@ export const Header = () => {
             >
               All Tickets
             </Link>
-            <Link
-              to="myTickets"
-              className="text-gray-700 dark:text-zinc-50 hover:text-black"
-            >
-              My Tickets
-            </Link>
+
             {user && dashboardPath && (
               <Link
                 to={dashboardPath}

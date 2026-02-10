@@ -23,6 +23,7 @@ import { AdminProfile } from "../pages/adminDashboard/AdminProfile";
 import { HomePage } from "../pages/HomePage";
 import { AdvertiseTickets } from "../pages/adminDashboard/AdvertiseTickets";
 import { CanclePayment } from "../components/CanclePayment";
+import ErrorPage from "../components/ErrorPage";
 
 export const router = createBrowserRouter([
   {
@@ -155,5 +156,9 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "*",
+    element: <ErrorPage></ErrorPage>,
   },
 ]);
