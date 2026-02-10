@@ -11,12 +11,14 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import useTheme from "../../hooks/useTheme";
 
 const COLORS = ["#4f46e5", "#22c55e"];
 
 const RevenueOverview = () => {
   const { user } = useContext(AuthContext);
   const [data, setData] = useState(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!user?.email) return;
@@ -44,29 +46,35 @@ const RevenueOverview = () => {
   ];
 
   return (
-    <div className="p-6 space-y-10">
+    <div className={`p-6 space-y-10 ${theme === "dark" ? "dark" : ""}`}>
       <h2 className="text-3xl font-bold">Revenue Overview</h2>
 
       {/* SUMMARY CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white shadow rounded p-5">
-          <h4 className="text-sm text-gray-500">Total Revenue</h4>
+        <div className="bg-white dark:bg-zinc-700 shadow rounded p-5">
+          <h4 className="text-sm text-gray-500 dark:text-gray-300">
+            Total Revenue
+          </h4>
           <p className="text-2xl font-bold">৳ {data.totalRevenue}</p>
         </div>
 
-        <div className="bg-white shadow rounded p-5">
-          <h4 className="text-sm text-gray-500">Tickets Sold</h4>
+        <div className="bg-white dark:bg-zinc-700  shadow rounded p-5">
+          <h4 className="text-sm text-gray-500 dark:text-gray-300">
+            Tickets Sold
+          </h4>
           <p className="text-2xl font-bold">{data.totalTicketsSold}</p>
         </div>
 
-        <div className="bg-white shadow rounded p-5">
-          <h4 className="text-sm text-gray-500">Tickets Added</h4>
+        <div className="bg-white dark:bg-zinc-700  shadow rounded p-5">
+          <h4 className="text-sm text-gray-500 dark:text-gray-300">
+            Tickets Added
+          </h4>
           <p className="text-2xl font-bold">{data.totalTicketsAdded}</p>
         </div>
       </div>
 
       {/* BAR CHART */}
-      <div className="bg-white shadow rounded p-6">
+      <div className="bg-white dark:bg-zinc-700  shadow rounded p-6">
         <h3 className="font-semibold mb-4">Revenue Over Time</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={revenueChartData}>
@@ -79,7 +87,7 @@ const RevenueOverview = () => {
       </div>
 
       {/* PIE CHART */}
-      <div className="bg-white shadow rounded p-6">
+      <div className="bg-white dark:bg-zinc-700  shadow rounded p-6">
         <h3 className="font-semibold mb-4">Tickets Distribution</h3>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>

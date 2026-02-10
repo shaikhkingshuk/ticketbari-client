@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import useTheme from "../../hooks/useTheme";
 
 export const MyAddedTickets = () => {
   const { user } = useContext(AuthContext);
@@ -8,6 +9,7 @@ export const MyAddedTickets = () => {
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [perks, setPerks] = useState([]);
+  const { theme } = useTheme();
 
   const divisions = [
     "Dhaka",
@@ -141,17 +143,21 @@ export const MyAddedTickets = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div
+      className={`max-w-7xl mx-auto px-4 py-8 ${theme === "dark" ? "dark" : ""}`}
+    >
       <h2 className="text-3xl font-bold mb-8 text-center">My Added Tickets</h2>
 
       {tickets.length === 0 ? (
-        <p className="text-center text-gray-500">No tickets added yet.</p>
+        <p className="text-center text-gray-500 dark:text-zinc-100">
+          No tickets added yet.
+        </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {tickets.map((ticket) => (
             <div
               key={ticket._id}
-              className="border rounded-xl shadow-sm hover:shadow-md transition flex flex-col overflow-hidden bg-white"
+              className="border rounded-xl shadow-sm hover:shadow-md transition flex flex-col overflow-hidden bg-white dark:bg-zinc-700"
             >
               {/* IMAGE */}
               <img
@@ -165,11 +171,11 @@ export const MyAddedTickets = () => {
               <div className="p-4 flex flex-col grow">
                 <h3 className="text-lg font-semibold mb-1">{ticket.title}</h3>
 
-                <p className="text-sm text-gray-600 mb-1">
+                <p className="text-sm text-gray-600 dark:text-zinc-200 mb-1">
                   {ticket.from} → {ticket.to}
                 </p>
 
-                <div className="text-sm text-gray-700 space-y-1">
+                <div className="text-sm text-gray-700 dark:text-zinc-200 space-y-1">
                   <p>Transport: {ticket.transportType}</p>
                   <p>Price: ৳{ticket.price}</p>
                   <p>Quantity: {ticket.quantity}</p>

@@ -5,6 +5,7 @@ import Countdown from "react-countdown";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
+import useTheme from "../../hooks/useTheme";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
@@ -12,6 +13,7 @@ const MyBookedTickets = () => {
   const { user } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const [payBooking, setPayBooking] = useState(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!user?.email) return; // 🛑 wait for auth
@@ -57,7 +59,7 @@ const MyBookedTickets = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className={`max-w-7xl mx-auto p-6 ${theme === "dark" ? "dark" : ""}`}>
       <h2 className="text-3xl font-bold mb-8 text-center">My Booked Tickets</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -66,7 +68,10 @@ const MyBookedTickets = () => {
           const expired = isExpired(ticket.departureDateTime);
 
           return (
-            <div key={b._id} className="border rounded-xl bg-white shadow">
+            <div
+              key={b._id}
+              className="border rounded-xl bg-white dark:bg-zinc-700 shadow"
+            >
               <img
                 src={ticket.image}
                 className="h-44 w-full object-cover rounded-t-xl"

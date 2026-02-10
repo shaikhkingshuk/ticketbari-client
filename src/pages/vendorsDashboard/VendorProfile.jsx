@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import useTheme from "../../hooks/useTheme";
 
 export const VendorProfile = () => {
   const { user } = useContext(AuthContext);
   const [vendorData, setVendorData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!user?.email) return;
@@ -31,7 +33,9 @@ export const VendorProfile = () => {
   }
 
   return (
-    <div className="p-6 max-w-md mx-auto bg-white shadow-md rounded-md mt-10">
+    <div
+      className={`p-6 max-w-md mx-auto bg-white dark:bg-zinc-700 shadow-md rounded-md mt-10 ${theme === "dark" ? "dark" : ""}`}
+    >
       <h2 className="text-2xl font-bold mb-4">Vendor Profile</h2>
 
       <div className="flex flex-col items-center mb-4">

@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import useTheme from "../../hooks/useTheme";
 
 export const AddTicket = () => {
   const { user } = useContext(AuthContext);
   const [perks, setPerks] = useState([]);
+  const { theme } = useTheme();
 
   const image_host_key = import.meta.env.VITE_image_host;
 
@@ -87,7 +89,9 @@ export const AddTicket = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white rounded shadow">
+    <div
+      className={`max-w-xl mx-auto p-6 bg-white dark:bg-zinc-700 rounded shadow ${theme === "dark" ? "dark" : ""}`}
+    >
       <h2 className="text-2xl font-semibold mb-6 text-center">
         Add New Ticket
       </h2>
@@ -185,7 +189,7 @@ export const AddTicket = () => {
           type="text"
           defaultValue={user?.displayName}
           readOnly
-          className="input input-bordered w-full bg-gray-100"
+          className="input input-bordered w-full bg-gray-100 dark:bg-zinc-600"
         />
 
         {/* Vendor Email */}
@@ -193,7 +197,7 @@ export const AddTicket = () => {
           type="email"
           defaultValue={user?.email}
           readOnly
-          className="input input-bordered w-full bg-gray-100"
+          className="input input-bordered w-full bg-gray-100 dark:bg-zinc-600"
         />
 
         <button className="btn btn-primary w-full">Add Ticket</button>

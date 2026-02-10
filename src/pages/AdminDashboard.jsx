@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { FaBars, FaTimes } from "react-icons/fa";
+import useTheme from "../hooks/useTheme";
 
 export const AdminDashboard = () => {
   const [open, setOpen] = useState(false);
-
+  const { theme } = useTheme();
   const closeMenu = () => setOpen(false);
 
   return (
-    <div className="mx-auto max-w-7xl min-h-screen flex relative">
+    <div
+      className={`mx-auto max-w-7xl min-h-screen flex relative ${theme === "dark" ? "dark" : ""}`}
+    >
       {/* Mobile menu button */}
       <button
         onClick={() => setOpen(!open)}
@@ -21,14 +24,14 @@ export const AdminDashboard = () => {
       <aside
         className={`
           fixed  top-0 left-0 z-40
-          h-full w-64 bg-gray-100 border-r
+          h-full w-64 bg-gray-100 dark:bg-zinc-700 border-r
           transform transition-transform duration-300
           ${open ? "translate-x-0" : "-translate-x-full"}
           
           pt-16 
         `}
       >
-        <h2 className="text-xl font-semibold mb-6 px-5">User Panel</h2>
+        <h2 className="text-xl font-semibold mb-6 px-5">Admin Panel</h2>
 
         <nav className="flex flex-col gap-3 px-5">
           <NavLink
@@ -38,7 +41,7 @@ export const AdminDashboard = () => {
               `px-3 py-2 rounded ${
                 isActive
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 hover:bg-gray-200"
+                  : "text-gray-700 dark:text-zinc-200 hover:bg-gray-200"
               }`
             }
           >
@@ -52,7 +55,7 @@ export const AdminDashboard = () => {
               `px-3 py-2 rounded ${
                 isActive
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 hover:bg-gray-200"
+                  : "text-gray-700 dark:text-zinc-200 hover:bg-gray-200"
               }`
             }
           >
@@ -66,7 +69,7 @@ export const AdminDashboard = () => {
               `px-3 py-2 rounded ${
                 isActive
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 hover:bg-gray-200"
+                  : "text-gray-700 dark:text-zinc-200 hover:bg-gray-200"
               }`
             }
           >
@@ -80,7 +83,7 @@ export const AdminDashboard = () => {
               `px-3 py-2 rounded ${
                 isActive
                   ? "bg-blue-500 text-white"
-                  : "text-gray-700 hover:bg-gray-200"
+                  : "text-gray-700 dark:text-zinc-200 hover:bg-gray-200"
               }`
             }
           >
