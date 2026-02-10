@@ -22,6 +22,7 @@ import { VendorProfile } from "../pages/vendorsDashboard/VendorProfile";
 import { AdminProfile } from "../pages/adminDashboard/AdminProfile";
 import { HomePage } from "../pages/HomePage";
 import { AdvertiseTickets } from "../pages/adminDashboard/AdvertiseTickets";
+import { CanclePayment } from "../components/CanclePayment";
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +76,7 @@ export const router = createBrowserRouter([
             <UserDashboard></UserDashboard>
           </PrivateRoute>
         ),
+
         children: [
           {
             index: true,
@@ -83,6 +85,10 @@ export const router = createBrowserRouter([
           {
             path: "/dashboard/user/myBookedTickets",
             element: <MyBookedTickets></MyBookedTickets>,
+          },
+          {
+            path: "/dashboard/user/paymentCancel",
+            element: <CanclePayment></CanclePayment>,
           },
           {
             path: "/dashboard/user/transactions",

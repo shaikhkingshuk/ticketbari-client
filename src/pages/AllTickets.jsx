@@ -43,7 +43,7 @@ export const AllTickets = () => {
       if (sort) params.append("sort", sort);
 
       const res = await fetch(
-        `http://localhost:3000/tickets?${params.toString()}`,
+        `https://ticketbari-server.onrender.com/tickets?${params.toString()}`,
       );
       const data = await res.json();
 

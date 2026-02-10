@@ -9,7 +9,9 @@ export const AdvertiseTickets = () => {
   useEffect(() => {
     const fetchTickets = async () => {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/admin/tickets");
+      const res = await fetch(
+        "https://ticketbari-server.onrender.com/admin/tickets",
+      );
       const data = await res.json();
 
       setTickets(data.filter((t) => t.verificationStatus === "approved"));
@@ -24,7 +26,7 @@ export const AdvertiseTickets = () => {
   const handleToggle = async (ticket) => {
     try {
       const res = await fetch(
-        `http://localhost:3000/admin/tickets/advertise/${ticket._id}`,
+        `https://ticketbari-server.onrender.com/admin/tickets/advertise/${ticket._id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -42,7 +44,9 @@ export const AdvertiseTickets = () => {
       }
 
       // refetch
-      const updated = await fetch("http://localhost:3000/admin/tickets");
+      const updated = await fetch(
+        "https://ticketbari-server.onrender.com/admin/tickets",
+      );
       const data = await updated.json();
       setTickets(data.filter((t) => t.verificationStatus === "approved"));
     } catch (err) {

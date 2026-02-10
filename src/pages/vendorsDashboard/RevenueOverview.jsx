@@ -23,7 +23,9 @@ const RevenueOverview = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:3000/vendor/revenue-overview?email=${user.email}`)
+    fetch(
+      `https://ticketbari-server.onrender.com/vendor/revenue-overview?email=${user.email}`,
+    )
       .then((res) => res.json())
       .then(setData);
   }, [user]);
@@ -32,17 +34,21 @@ const RevenueOverview = () => {
     return <p className="text-center mt-10">Loading revenue data...</p>;
   }
 
-  const revenueChartData = Object.keys(data.revenueChart).map((date) => ({
-    date,
-    revenue: data.revenueChart[date],
-  }));
+  const revenueChartData = Object.entries(data.revenueChart).map(
+    ([date, revenue]) => ({
+      date,
+      revenue,
+    }),
+  );
+
+  const ticketsRemaining = Math.max(
+    data.totalTicketsAdded - data.totalTicketsSold,
+    0,
+  );
 
   const pieData = [
     { name: "Tickets Sold", value: data.totalTicketsSold },
-    {
-      name: "Tickets Remaining",
-      value: data.totalTicketsAdded - data.totalTicketsSold,
-    },
+    { name: "Tickets Remaining", value: ticketsRemaining },
   ];
 
   return (
@@ -58,14 +64,14 @@ const RevenueOverview = () => {
           <p className="text-2xl font-bold">৳ {data.totalRevenue}</p>
         </div>
 
-        <div className="bg-white dark:bg-zinc-700  shadow rounded p-5">
+        <div className="bg-white dark:bg-zinc-700 shadow rounded p-5">
           <h4 className="text-sm text-gray-500 dark:text-gray-300">
             Tickets Sold
           </h4>
           <p className="text-2xl font-bold">{data.totalTicketsSold}</p>
         </div>
 
-        <div className="bg-white dark:bg-zinc-700  shadow rounded p-5">
+        <div className="bg-white dark:bg-zinc-700 shadow rounded p-5">
           <h4 className="text-sm text-gray-500 dark:text-gray-300">
             Tickets Added
           </h4>
@@ -74,7 +80,7 @@ const RevenueOverview = () => {
       </div>
 
       {/* BAR CHART */}
-      <div className="bg-white dark:bg-zinc-700  shadow rounded p-6">
+      <div className="bg-white dark:bg-zinc-700 shadow rounded p-6">
         <h3 className="font-semibold mb-4">Revenue Over Time</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={revenueChartData}>
@@ -87,7 +93,7 @@ const RevenueOverview = () => {
       </div>
 
       {/* PIE CHART */}
-      <div className="bg-white dark:bg-zinc-700  shadow rounded p-6">
+      <div className="bg-white dark:bg-zinc-700 shadow rounded p-6">
         <h3 className="font-semibold mb-4">Tickets Distribution</h3>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>

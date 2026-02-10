@@ -5,13 +5,13 @@ const ManageUsers = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/users")
+    fetch("https://ticketbari-server.onrender.com/users")
       .then((res) => res.json())
       .then((data) => setUsers(data));
   }, []);
 
   const updateRole = (id, role) => {
-    fetch(`http://localhost:3000/users/role/${id}`, {
+    fetch(`https://ticketbari-server.onrender.com/users/role/${id}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ role }),
@@ -26,7 +26,7 @@ const ManageUsers = () => {
   };
 
   const markFraud = (id) => {
-    fetch(`http://localhost:3000/users/fraud/${id}`, {
+    fetch(`https://ticketbari-server.onrender.com/users/fraud/${id}`, {
       method: "PATCH",
     })
       .then((res) => res.json())

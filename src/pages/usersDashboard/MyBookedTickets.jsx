@@ -16,9 +16,11 @@ const MyBookedTickets = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
-    if (!user?.email) return; // 🛑 wait for auth
+    if (!user?.email) return;
 
-    fetch(`http://localhost:3000/bookedTickets/user/${user.email}`)
+    fetch(
+      `https://ticketbari-server.onrender.com/bookedTickets/user/${user.email}`,
+    )
       .then((res) => res.json())
       .then((data) => setBookings(data))
       .catch(() => toast.error("Failed to load bookings"));
@@ -27,25 +29,22 @@ const MyBookedTickets = () => {
   const isExpired = (date) => new Date(date) < new Date();
 
   const handleCheckout = async (booking) => {
-    const res = await fetch("http://localhost:3000/create-checkout-session", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        bookingId: booking._id,
-        title: booking.title,
-        price: booking.price,
-        quantity: booking.bookedQuantity,
-        ticketId: booking.ticketId,
-      }),
-    });
+    const res = await fetch(
+      "https://ticketbari-server.onrender.com/create-checkout-session",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          bookingId: booking._id,
+          title: booking.title,
+          price: booking.price,
+          quantity: booking.bookedQuantity,
+          ticketId: booking.ticketId,
+        }),
+      },
+    );
 
     const data = await res.json();
-
-    // if (data.url) {
-    //   window.location.href = data.url; // 🔥 Redirect to Stripe
-    // } else {
-    //   toast.error("Failed to initiate payment");
-    // }
 
     if (data.url) {
       window.location.assign(data.url);

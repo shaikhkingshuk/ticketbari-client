@@ -12,7 +12,7 @@ export const UserProfile = () => {
     if (!user?.email) return;
 
     // Fetch user data from backend
-    fetch(`http://localhost:3000/users/${user.email}`)
+    fetch(`https://ticketbari-server.onrender.com/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setUserData(data);
@@ -55,7 +55,6 @@ export const UserProfile = () => {
         <div>
           <strong>Role:</strong> {userData.role}
         </div>
-        {/* UID intentionally hidden */}
       </div>
     </div>
   );

@@ -68,13 +68,16 @@ export const AddTicket = () => {
         vendorEmail: user?.email,
       };
 
-      const res = await fetch("http://localhost:3000/tickets", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
+      const res = await fetch(
+        "https://ticketbari-server.onrender.com/tickets",
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(ticketData),
         },
-        body: JSON.stringify(ticketData),
-      });
+      );
 
       if (res.ok) {
         toast.success("Ticket added successfully (Pending approval)");

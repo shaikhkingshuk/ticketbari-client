@@ -9,16 +9,21 @@ const VendorRequestedBookings = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:3000/vendor/bookings?email=${user.email}`)
+    fetch(
+      `https://ticketbari-server.onrender.com/vendor/bookings?email=${user.email}`,
+    )
       .then((res) => res.json())
       .then((data) => setBookings(data))
       .catch(() => toast.error("Failed to load bookings"));
   }, [user]);
 
   const handleAction = async (id, action) => {
-    const res = await fetch(`http://localhost:3000/bookings/${action}/${id}`, {
-      method: "PATCH",
-    });
+    const res = await fetch(
+      `https://ticketbari-server.onrender.com/bookings/${action}/${id}`,
+      {
+        method: "PATCH",
+      },
+    );
 
     if (res.ok) {
       setBookings((prev) =>

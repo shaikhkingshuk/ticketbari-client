@@ -29,7 +29,7 @@ export const Register = () => {
     createUser(email, password)
       .then((res) => updateProfile(res.user, { displayName: name, photoURL }))
       .then(() =>
-        fetch("http://localhost:3000/users", {
+        fetch("https://ticketbari-server.onrender.com/users", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
@@ -111,9 +111,9 @@ export const Register = () => {
 
         {/* Divider */}
         <div className="flex items-center my-6">
-          <div className="flex-grow h-px bg-gray-300" />
+          <div className="grow h-px bg-gray-300" />
           <span className="px-3 text-gray-400 text-sm">OR</span>
-          <div className="flex-grow h-px bg-gray-300" />
+          <div className="grow h-px bg-gray-300" />
         </div>
 
         {/* Google */}

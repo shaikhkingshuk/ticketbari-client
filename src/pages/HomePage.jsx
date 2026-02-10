@@ -17,8 +17,10 @@ export const HomePage = () => {
         setLoading(true);
 
         const [adsRes, latestRes] = await Promise.all([
-          fetch("http://localhost:3000/homepage/ads"),
-          fetch("http://localhost:3000/homepage/latest-tickets"),
+          fetch("https://ticketbari-server.onrender.com/homepage/ads"),
+          fetch(
+            "https://ticketbari-server.onrender.com/homepage/latest-tickets",
+          ),
         ]);
 
         const advertised = await adsRes.json();
@@ -51,7 +53,7 @@ export const HomePage = () => {
         modules={[Autoplay]}
         autoplay={{ delay: 3000 }}
         loop
-        className="h-[400px]"
+        className="h-100"
       >
         {[
           "https://images.unsplash.com/photo-1503220317375-aaad61436b1b",
@@ -101,7 +103,7 @@ export const HomePage = () => {
       {/* EXTRA SECTION 1 */}
       <section className="relative py-20 overflow-hidden">
         {/* Gradient background */}
-        <div className="absolute inset-0 bg-linear-to-br from-blue-500 via-indigo-500 to-purple-500 dark:from-gray-900 dark:via-gray-800 dark:to-black" />
+        <div className="absolute inset-0 bg-linear-to-br from-blue-5y00 via-indigo-500 to-purple-500 dark:from-gray-900 dark:via-gray-800 dark:to-black" />
 
         {/* Glow */}
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-purple-400/30 rounded-full blur-3xl animate-pulse" />

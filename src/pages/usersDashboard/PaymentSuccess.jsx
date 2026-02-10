@@ -12,7 +12,7 @@ const PaymentSuccess = () => {
     const quantity = params.get("quantity");
     const transactionId = params.get("session_id"); // Stripe sends this
 
-    fetch(`http://localhost:3000/bookings/pay/${bookingId}`, {
+    fetch(`https://ticketbari-server.onrender.com/bookings/pay/${bookingId}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({

@@ -6,14 +6,17 @@ const CheckoutForm = ({ booking, close }) => {
   const elements = useElements();
 
   const handlePay = async () => {
-    const res = await fetch("http://localhost:3000/create-payment-intent", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        price: booking.price,
-        quantity: booking.bookedQuantity,
-      }),
-    });
+    const res = await fetch(
+      "https://ticketbari-server.onrender.com/create-payment-intent",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          price: booking.price,
+          quantity: booking.bookedQuantity,
+        }),
+      },
+    );
 
     const { clientSecret } = await res.json();
 
@@ -24,14 +27,17 @@ const CheckoutForm = ({ booking, close }) => {
     });
 
     if (result.paymentIntent.status === "succeeded") {
-      await fetch(`http://localhost:3000/bookings/pay/${booking._id}`, {
-        method: "PATCH",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          ticketId: booking.ticketId,
-          bookedQuantity: booking.bookedQuantity,
-        }),
-      });
+      await fetch(
+        `https://ticketbari-server.onrender.com/bookings/pay/${booking._id}`,
+        {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            ticketId: booking.ticketId,
+            bookedQuantity: booking.bookedQuantity,
+          }),
+        },
+      );
 
       toast.success("Payment successful");
       close();

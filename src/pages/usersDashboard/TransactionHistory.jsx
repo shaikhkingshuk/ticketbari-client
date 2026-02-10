@@ -8,17 +8,17 @@ const TransactionHistory = () => {
   useEffect(() => {
     if (!user?.email) return; // ✅ wait until user exists
 
-    fetch(`http://localhost:3000/transactions/user/${user.email}`)
+    fetch(
+      `https://ticketbari-server.onrender.com/transactions/user/${user.email}`,
+    )
       .then((res) => res.json())
       .then((data) => setTransactions(data));
   }, [user?.email]);
 
-  // ⏳ loading state
   if (loading) {
     return <p className="text-center mt-20">Loading...</p>;
   }
 
-  // 🔐 safety check
   if (!user) {
     return <p className="text-center mt-20">Please login first</p>;
   }

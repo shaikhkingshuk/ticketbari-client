@@ -64,7 +64,7 @@ export const MyAddedTickets = () => {
     };
 
     const res = await fetch(
-      `http://localhost:3000/tickets/${selectedTicket._id}`,
+      `https://ticketbari-server.onrender.com/tickets/${selectedTicket._id}`,
       {
         method: "PATCH",
         headers: {
@@ -98,7 +98,7 @@ export const MyAddedTickets = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`http://localhost:3000/tickets/vendor/${user.email}`)
+    fetch(`https://ticketbari-server.onrender.com/tickets/vendor/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setTickets(data);
@@ -123,9 +123,12 @@ export const MyAddedTickets = () => {
     if (!confirm) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/tickets/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://ticketbari-server.onrender.comtickets/${id}`,
+        {
+          method: "DELETE",
+        },
+      );
 
       if (res.ok) {
         toast.success("Ticket deleted");
@@ -221,7 +224,7 @@ export const MyAddedTickets = () => {
       )}
       {selectedTicket && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded shadow p-6 w-full max-w-xl">
+          <div className="bg-white dark:bg-zinc-700 rounded shadow p-6 w-full max-w-xl">
             <h2 className="text-2xl font-semibold mb-4 text-center">
               Update Ticket
             </h2>
