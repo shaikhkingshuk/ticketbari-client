@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, Outlet } from "react-router";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 export const AdminDashboard = () => {
-  return (
-    <div className="mx-auto max-w-7xl mt-5 flex min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-100 border-r p-5">
-        <h2 className="text-xl font-semibold mb-6">Admin Panel</h2>
+  const [open, setOpen] = useState(false);
 
-        <nav className="flex flex-col gap-3">
+  const closeMenu = () => setOpen(false);
+
+  return (
+    <div className="mx-auto max-w-7xl min-h-screen flex relative">
+      {/* Mobile menu button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className={` absolute top-4 left-4 z-50 p-2 bg-blue-500 text-white rounded ${open && "fixed top-4 left-4 z-50"}  `}
+      >
+        {open ? <FaTimes /> : <FaBars />}
+      </button>
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed  top-0 left-0 z-40
+          h-full w-64 bg-gray-100 border-r
+          transform transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"}
+          
+          pt-16 
+        `}
+      >
+        <h2 className="text-xl font-semibold mb-6 px-5">User Panel</h2>
+
+        <nav className="flex flex-col gap-3 px-5">
           <NavLink
-            to="profile"
+            to="/dashboard/admin"
+            onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive
@@ -24,6 +47,7 @@ export const AdminDashboard = () => {
 
           <NavLink
             to="/dashboard/admin/manageTickets"
+            onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive
@@ -36,7 +60,8 @@ export const AdminDashboard = () => {
           </NavLink>
 
           <NavLink
-            to="manage-users"
+            to="/dashboard/admin/manageUsers"
+            onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive
@@ -49,7 +74,8 @@ export const AdminDashboard = () => {
           </NavLink>
 
           <NavLink
-            to="advertise-tickets"
+            to="/dashboard/admin/advertiseTickets"
+            onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive
@@ -64,7 +90,7 @@ export const AdminDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 ">
         <Outlet />
       </main>
     </div>

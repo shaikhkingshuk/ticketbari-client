@@ -32,7 +32,7 @@ export const VendorDashboard = () => {
 
         <nav className="flex flex-col gap-3 px-5">
           <NavLink
-            to="profile"
+            to="/dashboard/vendor"
             onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${

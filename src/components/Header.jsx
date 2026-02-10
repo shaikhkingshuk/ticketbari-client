@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import useTheme from "../hooks/useTheme";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router";
@@ -6,32 +6,29 @@ import { toast } from "react-toastify";
 import logo from "../assets/logo.png";
 
 export const Header = () => {
-  const { user, loading, logOut } = useContext(AuthContext);
+  const { user, role, loading, logOut } = useContext(AuthContext); // ✅ get role directly
   const [open, setOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [dashboardPath, setDashboardPath] = useState(null);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user?.email) {
-      fetch(`http://localhost:3000/users/${user.email}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data?.role === "admin") {
-            setDashboardPath("/dashboard/admin");
-          } else if (data?.role === "vendor") {
-            setDashboardPath("/dashboard/vendor");
-          } else {
-            setDashboardPath("/dashboard/user");
-          }
-        });
-    }
-  }, [user]);
+  const closeDropdown = () => {
+    setDropdownOpen(false);
+  };
 
-  // console.log(user);
+  // Set dashboard path based on role
+  const dashboardPath =
+    role === "admin"
+      ? "/dashboard/admin"
+      : role === "vendor"
+        ? "/dashboard/vendor"
+        : role === "user"
+          ? "/dashboard/user"
+          : null;
+
   const handleLogout = () => {
+    console.log("abcdedddd");
     logOut()
       .then(() => {
         toast.success("Logged out successfully");
@@ -66,18 +63,24 @@ export const Header = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-6">
-            <a href="/allTickets" className="text-gray-600 hover:text-blue-600">
+            <Link to="/" className="text-gray-600 hover:text-blue-600">
+              Home
+            </Link>
+            <Link
+              to="/allTickets"
+              className="text-gray-600 hover:text-blue-600"
+            >
               All Tickets
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/myTickets"
               className="text-gray-600 dark:text-white hover:text-blue-600"
             >
               My Tickets
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600">
+            </Link>
+            <Link to="#" className="text-gray-600 hover:text-blue-600">
               Support
-            </a>
+            </Link>
             {user && dashboardPath && (
               <Link
                 to={dashboardPath}
@@ -88,11 +91,11 @@ export const Header = () => {
             )}
           </div>
 
-          <div className="flex items-center gap-3 ">
+          <div className="flex items-center gap-3">
             <input
               type="checkbox"
               value="dark"
-              className="toggle theme-controller mr-2 text-gray-600 "
+              className="toggle theme-controller mr-2 text-gray-600"
               checked={theme === "dark"}
               onChange={(e) => toggleTheme(e.target.checked)}
             />
@@ -100,7 +103,7 @@ export const Header = () => {
               <div className="relative">
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-2  px-3 py-1.5 rounded-md hover:bg-gray-100"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-gray-100"
                 >
                   <img
                     src={
@@ -111,27 +114,30 @@ export const Header = () => {
                     alt="user"
                     className="w-8 h-8 rounded-full"
                   />
-                  {/* {console.log(user?.photoURL)} */}
                   <span className="text-gray-700 hidden sm:inline">
                     {user?.displayName}
                   </span>
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-4 w-40 bg-blue-100 rounded-md shadow-md">
+                  <div className="absolute right-0 mt-4 w-40 bg-blue-100 rounded-md shadow-md z-50">
                     <Link
                       to="/profile"
+                      onClick={closeDropdown}
                       className="block px-4 py-2 hover:bg-gray-100"
                     >
                       Profile
                     </Link>
 
-                    <Link
-                      onClick={handleLogout}
+                    <button
+                      onClick={() => {
+                        closeDropdown();
+                        handleLogout();
+                      }}
                       className="w-full text-left px-4 py-2 hover:bg-gray-100"
                     >
                       Logout
-                    </Link>
+                    </button>
                   </div>
                 )}
               </div>
@@ -156,15 +162,18 @@ export const Header = () => {
       {open && (
         <div className="md:hidden absolute z-999 inline-block px-5 m-2 rounded-2xl bg-blue-100">
           <div className="flex flex-col gap-4 px-4 py-4">
-            <a href="/allTickets" className="text-gray-700">
+            <Link to="/" className="text-gray-600 hover:text-blue-600">
+              Home
+            </Link>
+            <Link to="/allTickets" className="text-gray-700">
               All Tickets
-            </a>
-            <a href="#" className="text-gray-700">
+            </Link>
+            <Link to="#" className="text-gray-700">
               My Tickets
-            </a>
-            <a href="#" className="text-gray-700">
+            </Link>
+            <Link to="#" className="text-gray-700">
               Support
-            </a>
+            </Link>
             {user && dashboardPath && (
               <Link
                 to={dashboardPath}

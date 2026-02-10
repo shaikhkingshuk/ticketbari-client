@@ -5,13 +5,13 @@ const ManageTickets = () => {
   const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/tickets")
+    fetch("http://localhost:3000/admin/tickets")
       .then((res) => res.json())
       .then((data) => setTickets(data));
   }, []);
 
   const handleStatusChange = (id, status) => {
-    fetch(`http://localhost:3000/tickets/${id}`, {
+    fetch(`http://localhost:3000/admin/tickets/${id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
