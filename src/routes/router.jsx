@@ -50,7 +50,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/allTickets",
-        element: <AllTickets></AllTickets>,
+        element: (
+          <PrivateRoute>
+            <AllTickets></AllTickets>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/tickets/:id",

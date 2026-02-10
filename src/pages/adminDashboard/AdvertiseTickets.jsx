@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import useTheme from "../../hooks/useTheme";
 
 export const AdvertiseTickets = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -51,13 +53,15 @@ export const AdvertiseTickets = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div
+      className={`p-6 max-w-7xl mx-auto mt-5 ${theme === "dark" ? "dark" : ""}`}
+    >
       <h2 className="text-xl font-bold mb-4">
         Advertise Tickets ({advertisedCount}/6)
       </h2>
 
       <table className="w-full border">
-        <thead className="bg-gray-100">
+        <thead className="bg-gray-200 dark:bg-gray-500">
           <tr>
             <th className="border p-2">Title</th>
             <th className="border p-2">Route</th>

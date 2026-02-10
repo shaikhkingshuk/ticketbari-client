@@ -46,8 +46,8 @@ export const Header = () => {
   }
 
   return (
-    <nav className="bg-white relative">
-      <div className="mx-auto max-w-7xl pr-6 pl-2 b-2 bg-blue-50 rounded-full mt-2">
+    <nav className="relative">
+      <div className="mx-auto max-w-7xl pr-6 pl-2 b-2 bg-blue-100 dark:bg-blue-600 rounded-full mt-2">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-0">
             <button
@@ -57,34 +57,35 @@ export const Header = () => {
               ☰
             </button>
             <img src={logo} alt="ticketbari logo" className="w-15" />
-            <span className="hidden sm:inline text-xl font-bold text-gray-800">
+            <span className="hidden sm:inline text-xl font-bold text-zinc-900 dark:text-zinc-50">
               TicketBari
             </span>
           </div>
 
           <div className="hidden md:flex items-center gap-6">
-            <Link to="/" className="text-gray-600 hover:text-blue-600">
+            <Link
+              to="/"
+              className="text-gray-600 dark:text-zinc-50 hover:text-black"
+            >
               Home
             </Link>
             <Link
               to="/allTickets"
-              className="text-gray-600 hover:text-blue-600"
+              className="text-gray-600 dark:text-zinc-50 hover:text-black"
             >
               All Tickets
             </Link>
             <Link
               to="/myTickets"
-              className="text-gray-600 dark:text-white hover:text-blue-600"
+              className="text-gray-600 dark:text-zinc-50 hover:text-black"
             >
               My Tickets
             </Link>
-            <Link to="#" className="text-gray-600 hover:text-blue-600">
-              Support
-            </Link>
+
             {user && dashboardPath && (
               <Link
                 to={dashboardPath}
-                className="text-gray-600 hover:text-blue-600"
+                className="text-gray-600 dark:text-zinc-50 hover:text-black"
               >
                 Dashboard
               </Link>
@@ -103,7 +104,7 @@ export const Header = () => {
               <div className="relative">
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-gray-100"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-gray-300"
                 >
                   <img
                     src={
@@ -120,11 +121,11 @@ export const Header = () => {
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-4 w-40 bg-blue-100 rounded-md shadow-md z-50">
+                  <div className="absolute right-0 mt-4 w-40 bg-blue-100 dark:bg-blue-600 rounded-md shadow-md z-50">
                     <Link
                       to="/profile"
                       onClick={closeDropdown}
-                      className="block px-4 py-2 hover:bg-gray-100"
+                      className="block px-4 py-2 hover:bg-blue-800"
                     >
                       Profile
                     </Link>
@@ -134,7 +135,7 @@ export const Header = () => {
                         closeDropdown();
                         handleLogout();
                       }}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                      className="w-full text-left px-4 py-2 hover:bg-blue-800"
                     >
                       Logout
                     </button>
@@ -160,24 +161,30 @@ export const Header = () => {
       </div>
 
       {open && (
-        <div className="md:hidden absolute z-999 inline-block px-5 m-2 rounded-2xl bg-blue-100">
+        <div className="md:hidden absolute z-999 inline-block px-5 m-2 rounded-2xl bg-blue-600">
           <div className="flex flex-col gap-4 px-4 py-4">
-            <Link to="/" className="text-gray-600 hover:text-blue-600">
+            <Link
+              to="/"
+              className="text-gray-600 dark:text-zinc-50 hover:text-black"
+            >
               Home
             </Link>
-            <Link to="/allTickets" className="text-gray-700">
+            <Link
+              to="/allTickets"
+              className="text-gray-700 dark:text-zinc-50 hover:text-black"
+            >
               All Tickets
             </Link>
-            <Link to="#" className="text-gray-700">
+            <Link
+              to="myTickets"
+              className="text-gray-700 dark:text-zinc-50 hover:text-black"
+            >
               My Tickets
-            </Link>
-            <Link to="#" className="text-gray-700">
-              Support
             </Link>
             {user && dashboardPath && (
               <Link
                 to={dashboardPath}
-                className="text-gray-600 hover:text-blue-600"
+                className="text-gray-600 dark:text-zinc-50 hover:text-black"
               >
                 Dashboard
               </Link>

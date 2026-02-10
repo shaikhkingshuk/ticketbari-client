@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { useParams } from "react-router";
+import useTheme from "../hooks/useTheme";
 
 export const TicketDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
+  const { theme } = useTheme();
 
   const [ticket, setTicket] = useState(null);
   const [bookQty, setBookQty] = useState(1);
@@ -55,41 +57,67 @@ export const TicketDetails = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <img src={ticket.image} className="w-full h-72 object-cover rounded" />
+    <div className={`${theme === "dark" ? "dark" : ""} max-w-4xl  mx-auto p-6`}>
+      {/* Ticket Card */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl border-2 border-zinc-500 shadow-lg overflow-hidden">
+        <img
+          src={ticket.image}
+          alt={ticket.title}
+          className="w-full h-72 object-cover"
+        />
 
-      <div className="mt-6 space-y-2">
-        <h2 className="text-3xl font-bold">{ticket.title}</h2>
-        <p>
-          {ticket.from} → {ticket.to}
-        </p>
-        <p>Transport: {ticket.transportType}</p>
-        <p>Price: ৳{ticket.price}</p>
-        <p>Available: {ticket.quantity}</p>
-        <p>
-          Perks:{" "}
-          {Array.isArray(ticket.perks) && ticket.perks.length > 0
-            ? ticket.perks
-                .map((p) => (typeof p === "string" ? p : p.name))
-                .join(", ")
-            : "No perks"}
-        </p>
-        <p>Departure: {departureTime.toLocaleString()}</p>
+        <div className="p-6 space-y-3">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+            {ticket.title}
+          </h2>
 
-        <button
-          disabled={disableBook}
-          onClick={() => setShowModal(true)}
-          className="btn btn-primary mt-4 disabled:opacity-50"
-        >
-          Book Now
-        </button>
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
+            <p className="text-gray-700 dark:text-gray-300 font-medium">
+              {ticket.from} → {ticket.to}
+            </p>
+            <p className="text-gray-700 dark:text-gray-300 font-medium">
+              Departure: {departureTime.toLocaleString()}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-4 mt-2">
+            <span className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-white font-medium">
+              Transport: {ticket.transportType}
+            </span>
+            <span className="px-3 py-1 rounded-full bg-green-100 dark:bg-green-700 text-green-800 dark:text-white font-medium">
+              Price: ৳{ticket.price}
+            </span>
+            <span className="px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-700 text-purple-800 dark:text-white font-medium">
+              Available: {ticket.quantity}
+            </span>
+          </div>
+
+          <p className="text-gray-700 dark:text-gray-300 mt-2">
+            <strong>Perks:</strong>{" "}
+            {Array.isArray(ticket.perks) && ticket.perks.length > 0
+              ? ticket.perks
+                  .map((p) => (typeof p === "string" ? p : p.name))
+                  .join(", ")
+              : "No perks"}
+          </p>
+
+          <button
+            disabled={disableBook}
+            onClick={() => setShowModal(true)}
+            className="mt-4 w-full btn btn-primary disabled:opacity-50"
+          >
+            Book Now
+          </button>
+        </div>
       </div>
 
       {/* BOOK MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
-          <div className="bg-white p-6 rounded w-96">
-            <h3 className="text-xl font-semibold mb-4">Book Ticket</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg w-96">
+            <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+              Book Ticket
+            </h3>
 
             <input
               type="number"
@@ -97,7 +125,7 @@ export const TicketDetails = () => {
               max={ticket.quantity}
               value={bookQty}
               onChange={(e) => setBookQty(Number(e.target.value))}
-              className="input input-bordered w-full"
+              className="input input-bordered w-full dark:bg-gray-700 dark:text-white"
             />
 
             <div className="flex gap-3 mt-4">
