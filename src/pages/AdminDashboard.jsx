@@ -23,7 +23,7 @@ export const AdminDashboard = () => {
           </NavLink>
 
           <NavLink
-            to="manage-tickets"
+            to="/dashboard/admin/manageTickets"
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
                 isActive

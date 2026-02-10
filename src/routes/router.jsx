@@ -14,6 +14,7 @@ import MyBookedTickets from "../pages/usersDashboard/MyBookedTickets";
 import PaymentSuccess from "../pages/usersDashboard/PaymentSuccess";
 import TransactionHistory from "../pages/usersDashboard/TransactionHistory";
 import RevenueOverview from "../pages/vendorsDashboard/RevenueOverview";
+import ManageTickets from "../pages/adminDashboard/ManageTickets";
 
 export const router = createBrowserRouter([
   {
@@ -80,6 +81,12 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/admin",
         element: <AdminDashboard></AdminDashboard>,
+        children: [
+          {
+            path: "/dashboard/admin/manageTickets",
+            element: <ManageTickets></ManageTickets>,
+          },
+        ],
       },
     ],
   },

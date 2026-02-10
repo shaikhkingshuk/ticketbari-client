@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useTheme from "../hooks/useTheme";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router";
@@ -10,8 +10,25 @@ export const Header = () => {
   const [open, setOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dashboardPath, setDashboardPath] = useState(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`http://localhost:3000/users/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data?.role === "admin") {
+            setDashboardPath("/dashboard/admin");
+          } else if (data?.role === "vendor") {
+            setDashboardPath("/dashboard/vendor");
+          } else {
+            setDashboardPath("/dashboard/user");
+          }
+        });
+    }
+  }, [user]);
 
   // console.log(user);
   const handleLogout = () => {
@@ -61,6 +78,14 @@ export const Header = () => {
             <a href="#" className="text-gray-600 hover:text-blue-600">
               Support
             </a>
+            {user && dashboardPath && (
+              <Link
+                to={dashboardPath}
+                className="text-gray-600 hover:text-blue-600"
+              >
+                Dashboard
+              </Link>
+            )}
           </div>
 
           <div className="flex items-center gap-3 ">
@@ -140,6 +165,14 @@ export const Header = () => {
             <a href="#" className="text-gray-700">
               Support
             </a>
+            {user && dashboardPath && (
+              <Link
+                to={dashboardPath}
+                className="text-gray-600 hover:text-blue-600"
+              >
+                Dashboard
+              </Link>
+            )}
           </div>
         </div>
       )}
