@@ -36,11 +36,6 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-  /**
-   * 🔑 SINGLE SOURCE OF TRUTH
-   * - Firebase controls `user`
-   * - Backend controls `role`
-   */
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
@@ -48,7 +43,7 @@ const AuthProvider = ({ children }) => {
       if (currentUser?.email) {
         try {
           const res = await fetch(
-            `http://localhost:3000/users/${currentUser.email}`,
+            `https://ticketbari-server.onrender.com/users/${currentUser.email}`,
           );
 
           if (!res.ok) throw new Error("Role fetch failed");
@@ -77,7 +72,6 @@ const AuthProvider = ({ children }) => {
     signIn,
     googleSignIn,
     logOut,
-    // ❌ DO NOT expose setUser anymore
   };
 
   return (

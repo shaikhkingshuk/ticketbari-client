@@ -38,7 +38,7 @@ export const Header = () => {
         toast.error(error.message);
       });
   };
-
+  console.log(dashboardPath, role);
   if (loading) {
     return (
       <div className="h-16 flex items-center justify-center">Loading...</div>
