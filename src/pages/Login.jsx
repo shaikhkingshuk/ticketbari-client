@@ -7,6 +7,8 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
+import { sendPasswordResetEmail } from "firebase/auth"; // ✅ import
+import { auth } from "../firebase/firebase.config"; // ✅ import Firebase auth
 
 export const Login = () => {
   const images = [
@@ -44,17 +46,37 @@ export const Login = () => {
       .catch((error) => toast.error(error.message));
   };
 
+  // ✅ Forgot Password
+  const handleForgotPassword = async () => {
+    const email = emailRef.current?.value;
+    if (!email) {
+      return toast.error("Please enter your email first");
+    }
+    console.log(email);
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Password reset email sent!");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div className="mt-10 flex flex-row justify-between mx-auto max-w-7xl h-180">
       <div className="hidden md:block md:w-1/2 h-full">
         <Swiper
           modules={[Autoplay]}
           autoplay={{ delay: 3000, disableOnInteraction: false }}
-          loop
+          loop={true}
+          className="w-full h-full rounded-r-3xl"
         >
-          {images.map((url, i) => (
-            <SwiperSlide key={i}>
-              <img src={url} className="w-full h-full object-cover" />
+          {images.map((url, index) => (
+            <SwiperSlide key={index} className="w-full h-full">
+              <img
+                src={url}
+                alt={`slide-${index}`}
+                className="w-full h-full object-cover"
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -89,6 +111,14 @@ export const Login = () => {
                 {show ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
+
+            {/* Forgot Password */}
+            <p
+              className="text-right text-sm text-blue-500 cursor-pointer mb-2"
+              onClick={handleForgotPassword}
+            >
+              Forgot Password?
+            </p>
 
             <button className="btn btn-neutral w-full mt-4">Login</button>
           </form>

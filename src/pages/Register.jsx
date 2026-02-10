@@ -9,11 +9,13 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
+import useTheme from "../hooks/useTheme";
 
 export const Register = () => {
   const { createUser, googleSignIn } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -56,8 +58,10 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8">
+    <div
+      className={`min-h-screen mt-5 flex items-center justify-center px-4 ${theme === "dark" ? "dark" : ""}`}
+    >
+      <div className="w-full max-w-md bg-white dark:bg-zinc-700 shadow-xl rounded-2xl p-8">
         <h2 className="text-4xl font-bold text-center mb-2">Create Account</h2>
         <p className="text-center text-gray-500 mb-6">
           Join TicketBari and start booking
