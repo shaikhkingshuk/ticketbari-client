@@ -28,7 +28,3 @@ The frontend handles user interactions, form submissions, authentication, and in
 - **Stripe & @stripe/react-stripe-js** - Payment gateway integration  
 - **React Countdown** - Countdown timers  
 - **React Icons** - UI icons  
-
-
-# Lint the project
-npm run lint
