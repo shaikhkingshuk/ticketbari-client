@@ -10,9 +10,15 @@ const PaymentSuccess = () => {
     const bookingId = params.get("bookingId");
     const ticketId = params.get("ticketId");
     const quantity = params.get("quantity");
-    const transactionId = params.get("session_id"); // Stripe sends this
+    const transactionId = params.get("session_id");
 
-    fetch(`https://ticketbari-server.onrender.com/bookings/pay/${bookingId}`, {
+    if (!bookingId || !transactionId) {
+      toast.error("Invalid payment session");
+      navigate("/");
+      return;
+    }
+
+    fetch(`http://localhost:3000/bookings/pay/${bookingId}`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -21,6 +27,7 @@ const PaymentSuccess = () => {
         transactionId,
       }),
     })
+      .then((res) => res.json())
       .then(() => {
         toast.success("Payment completed successfully");
         navigate("/dashboard/user/transactions");
