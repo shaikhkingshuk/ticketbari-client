@@ -37,13 +37,34 @@ export const Login = () => {
   };
 
   // Google Login
-  const handleGoogleSignIn = () => {
-    googleSignIn()
-      .then(() => {
-        toast.success("Logged in with Google");
-        navigate("/");
-      })
-      .catch((error) => toast.error(error.message));
+  const handleGoogleSignIn = async () => {
+    try {
+      const res = await googleSignIn();
+      const user = res.user;
+
+      // ✅ get token (if your route is protected)
+      const token = await user.getIdToken();
+
+      // ✅ create user in DB
+      await fetch("https://ticketbari-server.onrender.com/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+        }),
+      });
+
+      toast.success("Logged in with Google");
+      navigate("/");
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   // ✅ Forgot Password
@@ -52,7 +73,6 @@ export const Login = () => {
     if (!email) {
       return toast.error("Please enter your email first");
     }
-    console.log(email);
     try {
       await sendPasswordResetEmail(auth, email);
       toast.success("Password reset email sent!");

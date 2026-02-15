@@ -11,7 +11,11 @@ export const AdminProfile = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`https://ticketbari-server.onrender.com/users/${user.email}`)
+    fetch(`https://ticketbari-server.onrender.com/users/${user.email}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setAdminData(data);

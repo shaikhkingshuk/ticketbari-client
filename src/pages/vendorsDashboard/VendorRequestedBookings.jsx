@@ -11,6 +11,11 @@ const VendorRequestedBookings = () => {
 
     fetch(
       `https://ticketbari-server.onrender.com/vendor/bookings?email=${user.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      },
     )
       .then((res) => res.json())
       .then((data) => setBookings(data))
@@ -22,6 +27,9 @@ const VendorRequestedBookings = () => {
       `https://ticketbari-server.onrender.com/bookings/${action}/${id}`,
       {
         method: "PATCH",
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
       },
     );
 

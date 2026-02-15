@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../context/AuthContext";
 
 const PaymentSuccess = () => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const bookingId = params.get("bookingId");
@@ -18,9 +20,12 @@ const PaymentSuccess = () => {
       return;
     }
 
-    fetch(`http://localhost:3000/bookings/pay/${bookingId}`, {
+    fetch(`https://ticketbari-server.onrender.com/bookings/pay/${bookingId}`, {
       method: "PATCH",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${user.accessToken}`,
+      },
       body: JSON.stringify({
         ticketId,
         bookedQuantity: Number(quantity),

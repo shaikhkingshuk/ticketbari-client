@@ -1,16 +1,22 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 const CheckoutForm = ({ booking, close }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const { user } = useContext(AuthContext);
 
   const handlePay = async () => {
     const res = await fetch(
       "https://ticketbari-server.onrender.com/create-payment-intent",
       {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${user.accessToken}`,
+        },
         body: JSON.stringify({
           price: booking.price,
           quantity: booking.bookedQuantity,
@@ -31,7 +37,10 @@ const CheckoutForm = ({ booking, close }) => {
         `https://ticketbari-server.onrender.com/bookings/pay/${booking._id}`,
         {
           method: "PATCH",
-          headers: { "content-type": "application/json" },
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${user.accessToken}`,
+          },
           body: JSON.stringify({
             ticketId: booking.ticketId,
             bookedQuantity: booking.bookedQuantity,

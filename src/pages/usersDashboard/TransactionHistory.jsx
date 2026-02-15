@@ -10,6 +10,11 @@ const TransactionHistory = () => {
 
     fetch(
       `https://ticketbari-server.onrender.com/transactions/user/${user.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      },
     )
       .then((res) => res.json())
       .then((data) => setTransactions(data));

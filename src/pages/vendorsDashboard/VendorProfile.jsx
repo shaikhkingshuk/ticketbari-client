@@ -12,7 +12,11 @@ export const VendorProfile = () => {
     if (!user?.email) return;
 
     // Fetch vendor data from backend
-    fetch(`https://ticketbari-server.onrender.com/users/${user.email}`)
+    fetch(`https://ticketbari-server.onrender.com/users/${user.email}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setVendorData(data);

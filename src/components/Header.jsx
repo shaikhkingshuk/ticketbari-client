@@ -28,7 +28,6 @@ export const Header = () => {
           : null;
 
   const handleLogout = () => {
-    console.log("abcdedddd");
     logOut()
       .then(() => {
         toast.success("Logged out successfully");
@@ -38,7 +37,6 @@ export const Header = () => {
         toast.error(error.message);
       });
   };
-  console.log(dashboardPath, role);
   if (loading) {
     return (
       <div className="h-16 flex items-center justify-center">Loading...</div>
@@ -159,12 +157,14 @@ export const Header = () => {
           <div className="flex flex-col gap-4 px-4 py-4">
             <Link
               to="/"
+              onClick={() => setOpen(false)}
               className="text-gray-600 dark:text-zinc-50 hover:text-black"
             >
               Home
             </Link>
             <Link
               to="/allTickets"
+              onClick={() => setOpen(false)}
               className="text-gray-700 dark:text-zinc-50 hover:text-black"
             >
               All Tickets
@@ -173,6 +173,7 @@ export const Header = () => {
             {user && dashboardPath && (
               <Link
                 to={dashboardPath}
+                onClick={() => setOpen(false)}
                 className="text-gray-600 dark:text-zinc-50 hover:text-black"
               >
                 Dashboard

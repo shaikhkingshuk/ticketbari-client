@@ -12,7 +12,11 @@ export const UserProfile = () => {
     if (!user?.email) return;
 
     // Fetch user data from backend
-    fetch(`https://ticketbari-server.onrender.com/users/${user.email}`)
+    fetch(`https://ticketbari-server.onrender.com/users/${user.email}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setUserData(data);

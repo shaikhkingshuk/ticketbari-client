@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useTheme from "../../hooks/useTheme";
+import { AuthContext } from "../../context/AuthContext";
 
 export const AdvertiseTickets = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchTickets = async () => {
       setLoading(true);
       const res = await fetch(
         "https://ticketbari-server.onrender.com/admin/tickets",
+        {
+          headers: {
+            authorization: `Bearer ${user.accessToken}`,
+          },
+        },
       );
       const data = await res.json();
 
@@ -29,7 +36,10 @@ export const AdvertiseTickets = () => {
         `https://ticketbari-server.onrender.com/admin/tickets/advertise/${ticket._id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user.accessToken}`,
+          },
           body: JSON.stringify({
             isAdvertised: !ticket.isAdvertised,
           }),
@@ -46,6 +56,11 @@ export const AdvertiseTickets = () => {
       // refetch
       const updated = await fetch(
         "https://ticketbari-server.onrender.com/admin/tickets",
+        {
+          headers: {
+            authorization: `Bearer ${user.accessToken}`,
+          },
+        },
       );
       const data = await updated.json();
       setTickets(data.filter((t) => t.verificationStatus === "approved"));

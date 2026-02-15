@@ -20,6 +20,11 @@ const MyBookedTickets = () => {
 
     fetch(
       `https://ticketbari-server.onrender.com/bookedTickets/user/${user.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      },
     )
       .then((res) => res.json())
       .then((data) => setBookings(data))
@@ -33,7 +38,10 @@ const MyBookedTickets = () => {
       "https://ticketbari-server.onrender.com/create-checkout-session",
       {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${user.accessToken}`,
+        },
         body: JSON.stringify({
           bookingId: booking._id,
           title: booking.title,

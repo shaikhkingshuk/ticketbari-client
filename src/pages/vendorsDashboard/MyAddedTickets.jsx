@@ -69,6 +69,7 @@ export const MyAddedTickets = () => {
         method: "PATCH",
         headers: {
           "content-type": "application/json",
+          authorization: `Bearer ${user.accessToken}`,
         },
         body: JSON.stringify(updatedTicket),
       },
@@ -98,7 +99,14 @@ export const MyAddedTickets = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    fetch(`https://ticketbari-server.onrender.com/tickets/vendor/${user.email}`)
+    fetch(
+      `https://ticketbari-server.onrender.com/tickets/vendor/${user.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      },
+    )
       .then((res) => res.json())
       .then((data) => {
         setTickets(data);
@@ -168,7 +176,6 @@ export const MyAddedTickets = () => {
                 alt={ticket.title}
                 className="h-44 w-full object-cover"
               />
-              {console.log(ticket)}
 
               {/* CONTENT */}
               <div className="p-4 flex flex-col grow">

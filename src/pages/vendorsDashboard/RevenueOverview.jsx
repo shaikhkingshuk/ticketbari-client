@@ -25,6 +25,11 @@ const RevenueOverview = () => {
 
     fetch(
       `https://ticketbari-server.onrender.com/vendor/revenue-overview?email=${user.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      },
     )
       .then((res) => res.json())
       .then(setData);

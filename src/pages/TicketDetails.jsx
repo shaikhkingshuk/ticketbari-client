@@ -14,7 +14,11 @@ export const TicketDetails = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetch(`https://ticketbari-server.onrender.com/tickets/${id}`)
+    fetch(`https://ticketbari-server.onrender.com/tickets/${id}`, {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setTicket(data));
   }, [id]);
@@ -42,7 +46,10 @@ export const TicketDetails = () => {
 
     const res = await fetch("https://ticketbari-server.onrender.com/bookings", {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${user.accessToken}`,
+      },
       body: JSON.stringify(bookingData),
     });
 

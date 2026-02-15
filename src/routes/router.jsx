@@ -24,6 +24,9 @@ import { HomePage } from "../pages/HomePage";
 import { AdvertiseTickets } from "../pages/adminDashboard/AdvertiseTickets";
 import { CanclePayment } from "../components/CanclePayment";
 import ErrorPage from "../components/ErrorPage";
+import UserRoute from "../privateRoute/UserRoute";
+import VendorRoute from "../privateRoute/VendorRoute";
+import AdminRoute from "../privateRoute/AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -73,9 +76,9 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/user",
         element: (
-          <PrivateRoute>
+          <UserRoute>
             <UserDashboard></UserDashboard>
-          </PrivateRoute>
+          </UserRoute>
         ),
 
         children: [
@@ -101,9 +104,9 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/vendor",
         element: (
-          <PrivateRoute>
+          <VendorRoute>
             <VendorDashboard></VendorDashboard>
-          </PrivateRoute>
+          </VendorRoute>
         ),
         children: [
           {
@@ -132,9 +135,9 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/admin",
         element: (
-          <PrivateRoute>
+          <AdminRoute>
             <AdminDashboard></AdminDashboard>
-          </PrivateRoute>
+          </AdminRoute>
         ),
         children: [
           {

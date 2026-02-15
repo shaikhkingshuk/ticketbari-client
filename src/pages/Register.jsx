@@ -8,7 +8,6 @@ import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 import { updateProfile } from "firebase/auth";
-import { auth } from "../firebase/firebase.config";
 import useTheme from "../hooks/useTheme";
 
 export const Register = () => {
@@ -27,34 +26,63 @@ export const Register = () => {
     const password = form.password.value;
 
     createUser(email, password)
-      .then((res) => updateProfile(res.user, { displayName: name, photoURL }))
-      .then(() =>
-        fetch("https://ticketbari-server.onrender.com/users", {
+      .then(async (res) => {
+        const user = res.user;
+
+        await updateProfile(user, {
+          displayName: name,
+          photoURL,
+        });
+
+        await fetch("https://ticketbari-server.onrender.com/users", {
           method: "POST",
-          headers: { "content-type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
-            uid: auth.currentUser.uid,
-            email,
+            uid: user.uid, // ✅ use res.user
+            email: user.email,
             name,
             photoURL,
             role: "user",
           }),
-        }),
-      )
-      .then(() => {
+        });
+
         toast.success("Account created");
         navigate("/");
       })
       .catch((err) => toast.error(err.message));
   };
 
-  const handleGoogleSignIn = () => {
-    googleSignIn()
-      .then(() => {
-        toast.success("Logged in with Google");
-        navigate("/");
-      })
-      .catch((err) => toast.error(err.message));
+  // Google Login
+  const handleGoogleSignIn = async () => {
+    try {
+      const res = await googleSignIn();
+      const user = res.user;
+
+      // ✅ get token (if your route is protected)
+      const token = await user.getIdToken();
+
+      // ✅ create user in DB
+      await fetch("https://ticketbari-server.onrender.com/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+        }),
+      });
+
+      toast.success("Logged in with Google");
+      navigate("/");
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
   return (

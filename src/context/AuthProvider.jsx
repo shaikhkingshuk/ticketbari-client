@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import {
   createUserWithEmailAndPassword,
@@ -14,6 +14,24 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Firebase user ONLY
   const [role, setRole] = useState(null); // Role from backend
   const [loading, setLoading] = useState(true);
+
+  const refreshRole = useCallback(async () => {
+    if (!auth.currentUser) return;
+
+    const token = await auth.currentUser.getIdToken(true);
+
+    const res = await fetch(
+      `https://ticketbari-server.onrender.com/users/${auth.currentUser.email}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const data = await res.json();
+    setRole(data?.role || "user");
+  }, []);
 
   // Register
   const createUser = (email, password) => {
@@ -42,8 +60,16 @@ const AuthProvider = ({ children }) => {
 
       if (currentUser?.email) {
         try {
+          // ✅ ALWAYS get fresh Firebase ID token
+          const token = await currentUser.getIdToken();
+
           const res = await fetch(
             `https://ticketbari-server.onrender.com/users/${currentUser.email}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
           );
 
           if (!res.ok) throw new Error("Role fetch failed");
@@ -68,6 +94,7 @@ const AuthProvider = ({ children }) => {
     user,
     role,
     loading,
+    refreshRole,
     createUser,
     signIn,
     googleSignIn,

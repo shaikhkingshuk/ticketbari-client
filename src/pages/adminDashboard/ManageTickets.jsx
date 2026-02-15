@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../context/AuthContext";
 
 const ManageTickets = () => {
   const [tickets, setTickets] = useState([]);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch("https://ticketbari-server.onrender.com/admin/tickets")
+    fetch("https://ticketbari-server.onrender.com/admin/tickets", {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setTickets(data));
   }, []);
@@ -15,6 +21,7 @@ const ManageTickets = () => {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${user.accessToken}`,
       },
       body: JSON.stringify({ status }),
     })

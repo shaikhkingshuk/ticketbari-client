@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
 import useTheme from "../hooks/useTheme";
+import { AuthContext } from "../context/AuthContext";
 
 export const AllTickets = () => {
   const { theme } = useTheme();
+  const { user } = useContext(AuthContext);
 
   const [tickets, setTickets] = useState([]);
   const [from, setFrom] = useState("");
@@ -26,7 +28,12 @@ export const AllTickets = () => {
     if (sort) params.append("sort", sort);
 
     const res = await fetch(
-      `http://localhost:3000/tickets?${params.toString()}`,
+      `https://ticketbari-server.onrender.com/tickets?${params.toString()}`,
+      {
+        headers: {
+          authorization: `Bearer ${user.accessToken}`,
+        },
+      },
     );
     const data = await res.json();
 
@@ -44,6 +51,11 @@ export const AllTickets = () => {
 
       const res = await fetch(
         `https://ticketbari-server.onrender.com/tickets?${params.toString()}`,
+        {
+          headers: {
+            authorization: `Bearer ${user.accessToken}`,
+          },
+        },
       );
       const data = await res.json();
 

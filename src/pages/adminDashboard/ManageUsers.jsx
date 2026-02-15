@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../context/AuthContext";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch("https://ticketbari-server.onrender.com/users")
+    fetch("https://ticketbari-server.onrender.com/users", {
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setUsers(data));
   }, []);
@@ -13,7 +19,10 @@ const ManageUsers = () => {
   const updateRole = (id, role) => {
     fetch(`https://ticketbari-server.onrender.com/users/role/${id}`, {
       method: "PATCH",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${user.accessToken}`,
+      },
       body: JSON.stringify({ role }),
     })
       .then((res) => res.json())
@@ -28,6 +37,9 @@ const ManageUsers = () => {
   const markFraud = (id) => {
     fetch(`https://ticketbari-server.onrender.com/users/fraud/${id}`, {
       method: "PATCH",
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
     })
       .then((res) => res.json())
       .then(() => {
