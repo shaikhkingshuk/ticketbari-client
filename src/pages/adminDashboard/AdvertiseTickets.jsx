@@ -12,7 +12,7 @@ export const AdvertiseTickets = () => {
     const fetchTickets = async () => {
       setLoading(true);
       const res = await fetch(
-        "https://ticketbari-server.onrender.com/admin/tickets",
+        "https://ticketbari-server-1.onrender.com/admin/tickets",
         {
           headers: {
             authorization: `Bearer ${user.accessToken}`,
@@ -33,7 +33,7 @@ export const AdvertiseTickets = () => {
   const handleToggle = async (ticket) => {
     try {
       const res = await fetch(
-        `https://ticketbari-server.onrender.com/admin/tickets/advertise/${ticket._id}`,
+        `https://ticketbari-server-1.onrender.com/admin/tickets/advertise/${ticket._id}`,
         {
           method: "PATCH",
           headers: {
@@ -55,7 +55,7 @@ export const AdvertiseTickets = () => {
 
       // refetch
       const updated = await fetch(
-        "https://ticketbari-server.onrender.com/admin/tickets",
+        "https://ticketbari-server-1.onrender.com/admin/tickets",
         {
           headers: {
             authorization: `Bearer ${user.accessToken}`,

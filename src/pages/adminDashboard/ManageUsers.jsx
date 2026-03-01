@@ -7,7 +7,7 @@ const ManageUsers = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch("https://ticketbari-server.onrender.com/users", {
+    fetch("https://ticketbari-server-1.onrender.com/users", {
       headers: {
         authorization: `Bearer ${user.accessToken}`,
       },
@@ -17,7 +17,7 @@ const ManageUsers = () => {
   }, []);
 
   const updateRole = (id, role) => {
-    fetch(`https://ticketbari-server.onrender.com/users/role/${id}`, {
+    fetch(`https://ticketbari-server-1.onrender.com/users/role/${id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -35,7 +35,7 @@ const ManageUsers = () => {
   };
 
   const markFraud = (id) => {
-    fetch(`https://ticketbari-server.onrender.com/users/fraud/${id}`, {
+    fetch(`https://ticketbari-server-1.onrender.com/users/fraud/${id}`, {
       method: "PATCH",
       headers: {
         authorization: `Bearer ${user.accessToken}`,

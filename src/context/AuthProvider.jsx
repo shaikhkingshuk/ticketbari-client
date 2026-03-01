@@ -21,7 +21,7 @@ const AuthProvider = ({ children }) => {
     const token = await auth.currentUser.getIdToken(true);
 
     const res = await fetch(
-      `https://ticketbari-server.onrender.com/users/${auth.currentUser.email}`,
+      `https://ticketbari-server-1.onrender.com/users/${auth.currentUser.email}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
           const token = await currentUser.getIdToken();
 
           const res = await fetch(
-            `https://ticketbari-server.onrender.com/users/${currentUser.email}`,
+            `https://ticketbari-server-1.onrender.com/users/${currentUser.email}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

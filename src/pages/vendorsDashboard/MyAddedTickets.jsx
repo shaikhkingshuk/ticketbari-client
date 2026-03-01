@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import useTheme from "../../hooks/useTheme";
+import Swal from "sweetalert2";
 
 export const MyAddedTickets = () => {
   const { user } = useContext(AuthContext);
@@ -64,7 +65,7 @@ export const MyAddedTickets = () => {
     };
 
     const res = await fetch(
-      `https://ticketbari-server.onrender.com/tickets/${selectedTicket._id}`,
+      `https://ticketbari-server-1.onrender.com/tickets/${selectedTicket._id}`,
       {
         method: "PATCH",
         headers: {
@@ -100,7 +101,7 @@ export const MyAddedTickets = () => {
     if (!user?.email) return;
 
     fetch(
-      `https://ticketbari-server.onrender.com/tickets/vendor/${user.email}`,
+      `https://ticketbari-server-1.onrender.com/tickets/vendor/${user.email}`,
       {
         headers: {
           authorization: `Bearer ${user.accessToken}`,
@@ -116,7 +117,7 @@ export const MyAddedTickets = () => {
         toast.error("Failed to load tickets");
         setLoading(false);
       });
-  }, [user?.email]);
+  }, [user?.email, user?.accessToken]);
 
   const getStatusStyle = (status) => {
     if (status === "approved") return "bg-green-100 text-green-700";
@@ -125,27 +126,50 @@ export const MyAddedTickets = () => {
   };
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this ticket?",
-    );
-    if (!confirm) return;
+    const result = await Swal.fire({
+      title: "Delete Ticket?",
+      text: "This action cannot be undone!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      background: theme === "dark" ? "#18181b" : "#ffffff",
+      color: theme === "dark" ? "#ffffff" : "#111827",
+    });
+
+    // user cancelled
+    if (!result.isConfirmed) return;
 
     try {
       const res = await fetch(
-        `https://ticketbari-server.onrender.comtickets/${id}`,
+        `https://ticketbari-server-1.onrender.com/tickets/${id}`, // ✅ FIXED URL
         {
           method: "DELETE",
+          headers: {
+            authorization: `Bearer ${user.accessToken}`,
+          },
         },
       );
 
       if (res.ok) {
-        toast.success("Ticket deleted");
-        setTickets(tickets.filter((t) => t._id !== id));
+        await Swal.fire({
+          title: "Deleted!",
+          text: "Ticket has been removed successfully.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+          background: theme === "dark" ? "#18181b" : "#ffffff",
+          color: theme === "dark" ? "#ffffff" : "#111827",
+        });
+
+        setTickets((prev) => prev.filter((t) => t._id !== id));
       } else {
-        toast.error("Delete failed");
+        Swal.fire("Error", "Delete failed", "error");
       }
-    } catch {
-      toast.error("Server error");
+    } catch (err) {
+      Swal.fire("Server Error", "Something went wrong", "error", err);
     }
   };
 
@@ -166,26 +190,32 @@ export const MyAddedTickets = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {tickets.map((ticket) => (
+            //card starts
+
             <div
               key={ticket._id}
-              className="border rounded-xl shadow-sm hover:shadow-md transition flex flex-col overflow-hidden bg-white dark:bg-zinc-700"
+              className="flex flex-col overflow-hidden rounded-xl border border-zinc-300 dark:border-zinc-700
+  bg-white dark:bg-zinc-900
+  shadow-sm hover:shadow-lg transition-all duration-300"
             >
               {/* IMAGE */}
               <img
                 src={ticket.image}
                 alt={ticket.title}
-                className="h-44 w-full object-cover"
+                className="h-48 w-full object-cover"
               />
 
               {/* CONTENT */}
-              <div className="p-4 flex flex-col grow">
-                <h3 className="text-lg font-semibold mb-1">{ticket.title}</h3>
+              <div className="p-5 flex flex-col grow">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  {ticket.title}
+                </h3>
 
-                <p className="text-sm text-gray-600 dark:text-zinc-200 mb-1">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                   {ticket.from} → {ticket.to}
                 </p>
 
-                <div className="text-sm text-gray-700 dark:text-zinc-200 space-y-1">
+                <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1 mt-2">
                   <p>Transport: {ticket.transportType}</p>
                   <p>Price: ৳{ticket.price}</p>
                   <p>Quantity: {ticket.quantity}</p>
@@ -205,7 +235,7 @@ export const MyAddedTickets = () => {
                 </span>
 
                 {/* ACTIONS */}
-                <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="mt-auto grid grid-cols-2 gap-3 pt-4">
                   <button
                     className="btn btn-sm btn-warning"
                     onClick={() => {
@@ -226,6 +256,8 @@ export const MyAddedTickets = () => {
                 </div>
               </div>
             </div>
+
+            // card ends
           ))}
         </div>
       )}

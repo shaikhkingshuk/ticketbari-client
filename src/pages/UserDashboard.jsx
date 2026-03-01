@@ -36,6 +36,7 @@ export const UserDashboard = () => {
         <nav className="flex flex-col gap-3 px-5">
           <NavLink
             to="/dashboard/user"
+            end
             onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${

@@ -34,7 +34,7 @@ export const Register = () => {
           photoURL,
         });
 
-        await fetch("https://ticketbari-server.onrender.com/users", {
+        await fetch("https://ticketbari-server-1.onrender.com/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export const Register = () => {
       const token = await user.getIdToken();
 
       // ✅ create user in DB
-      await fetch("https://ticketbari-server.onrender.com/users", {
+      await fetch("https://ticketbari-server-1.onrender.com/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

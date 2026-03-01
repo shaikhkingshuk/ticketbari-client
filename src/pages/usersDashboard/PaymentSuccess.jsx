@@ -9,6 +9,8 @@ const PaymentSuccess = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!user?.accessToken) return;
+
     const bookingId = params.get("bookingId");
     const ticketId = params.get("ticketId");
     const quantity = params.get("quantity");
@@ -20,25 +22,28 @@ const PaymentSuccess = () => {
       return;
     }
 
-    fetch(`https://ticketbari-server.onrender.com/bookings/pay/${bookingId}`, {
-      method: "PATCH",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${user.accessToken}`,
+    fetch(
+      `https://ticketbari-server-1.onrender.com/bookings/pay/${bookingId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${user.accessToken}`,
+        },
+        body: JSON.stringify({
+          ticketId,
+          bookedQuantity: Number(quantity),
+          transactionId,
+        }),
       },
-      body: JSON.stringify({
-        ticketId,
-        bookedQuantity: Number(quantity),
-        transactionId,
-      }),
-    })
+    )
       .then((res) => res.json())
       .then(() => {
         toast.success("Payment completed successfully");
         navigate("/dashboard/user/transactions");
       })
       .catch(() => toast.error("Payment confirmation failed"));
-  }, [params, navigate]);
+  }, [user, params, navigate]);
 
   return <p className="text-center mt-20">Processing payment...</p>;
 };

@@ -158,14 +158,14 @@ export const Header = () => {
             <Link
               to="/"
               onClick={() => setOpen(false)}
-              className="text-gray-600 dark:text-zinc-50 hover:text-black"
+              className="text-gray-600 dark:text-zinc-50 hover:text-black hover:font-bold hover:text-lg"
             >
               Home
             </Link>
             <Link
               to="/allTickets"
               onClick={() => setOpen(false)}
-              className="text-gray-700 dark:text-zinc-50 hover:text-black"
+              className="text-gray-700 dark:text-zinc-50 hover:text-black hover:font-bold hover:text-lg"
             >
               All Tickets
             </Link>
@@ -174,7 +174,7 @@ export const Header = () => {
               <Link
                 to={dashboardPath}
                 onClick={() => setOpen(false)}
-                className="text-gray-600 dark:text-zinc-50 hover:text-black"
+                className="text-gray-600 dark:text-zinc-50 hover:text-black hover:font-bold hover:text-lg"
               >
                 Dashboard
               </Link>

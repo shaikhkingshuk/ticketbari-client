@@ -7,6 +7,7 @@ export const AddTicket = () => {
   const { user } = useContext(AuthContext);
   const [perks, setPerks] = useState([]);
   const { theme } = useTheme();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const image_host_key = import.meta.env.VITE_image_host;
 
@@ -31,6 +32,11 @@ export const AddTicket = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!user?.accessToken) return;
+
+    setIsSubmitting(true); // ✅ start loading
+
     const form = e.target;
 
     const imageFile = form.image.files[0];
@@ -49,7 +55,9 @@ export const AddTicket = () => {
       const imgData = await imgRes.json();
 
       if (!imgData.success) {
-        return toast.error("Image upload failed");
+        toast.error("Image upload failed");
+        setIsSubmitting(false);
+        return;
       }
 
       const imageURL = imgData.data.display_url;
@@ -69,7 +77,7 @@ export const AddTicket = () => {
       };
 
       const res = await fetch(
-        "https://ticketbari-server.onrender.com/tickets",
+        "https://ticketbari-server-1.onrender.com/tickets",
         {
           method: "POST",
           headers: {
@@ -89,6 +97,8 @@ export const AddTicket = () => {
       }
     } catch (error) {
       toast.error("Something went wrong", error);
+    } finally {
+      setIsSubmitting(false); // ✅ always stop loading
     }
   };
 
@@ -204,7 +214,17 @@ export const AddTicket = () => {
           className="input input-bordered w-full bg-gray-100 dark:bg-zinc-600"
         />
 
-        <button className="btn btn-primary w-full">Add Ticket</button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="btn btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-60"
+        >
+          {isSubmitting && (
+            <span className="loading loading-spinner loading-sm"></span>
+          )}
+
+          {isSubmitting ? "Adding Ticket..." : "Add Ticket"}
+        </button>
       </form>
     </div>
   );

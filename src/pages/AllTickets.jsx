@@ -14,7 +14,7 @@ export const AllTickets = () => {
   const [sort, setSort] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const limit = 6;
+  const limit = 8;
 
   const fetchTickets = async () => {
     const params = new URLSearchParams({
@@ -28,7 +28,7 @@ export const AllTickets = () => {
     if (sort) params.append("sort", sort);
 
     const res = await fetch(
-      `https://ticketbari-server.onrender.com/tickets?${params.toString()}`,
+      `https://ticketbari-server-1.onrender.com/tickets?${params.toString()}`,
       {
         headers: {
           authorization: `Bearer ${user.accessToken}`,
@@ -43,14 +43,14 @@ export const AllTickets = () => {
 
   useEffect(() => {
     const fetchTickets = async () => {
-      const params = new URLSearchParams({ page, limit: 6 });
+      const params = new URLSearchParams({ page, limit: 8 });
       if (from) params.append("from", from);
       if (to) params.append("to", to);
       if (transportType) params.append("transportType", transportType);
       if (sort) params.append("sort", sort);
 
       const res = await fetch(
-        `https://ticketbari-server.onrender.com/tickets?${params.toString()}`,
+        `https://ticketbari-server-1.onrender.com/tickets?${params.toString()}`,
         {
           headers: {
             authorization: `Bearer ${user.accessToken}`,
@@ -64,7 +64,7 @@ export const AllTickets = () => {
     };
 
     fetchTickets();
-  }, [page, from, to, transportType, sort]); // ✅ all deps included
+  }, [page, from, to, transportType, sort, user?.accessToken]); // ✅ all deps included
 
   return (
     <div
@@ -124,35 +124,46 @@ export const AllTickets = () => {
       </div>
 
       {/* TICKETS */}
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-8">
         {tickets.map((ticket) => (
+          //card start
+
           <div
             key={ticket._id}
-            className="border rounded-xl bg-white dark:bg-gray-800 shadow"
+            className="flex flex-col overflow-hidden rounded-xl border border-zinc-300 dark:border-zinc-700
+  bg-white dark:bg-zinc-900
+  shadow-sm hover:shadow-lg transition-all duration-300"
           >
             <img
               src={ticket.image}
-              className="h-44 w-full object-cover"
-              alt=""
+              alt={ticket.title}
+              className="h-48 w-full object-cover"
             />
-            <div className="p-4 space-y-1">
-              <h3 className="font-semibold dark:text-white">{ticket.title}</h3>
-              <p className="dark:text-gray-300">
+
+            <div className="p-5 flex flex-col grow">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                {ticket.title}
+              </h3>
+
+              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                 {ticket.from} → {ticket.to}
               </p>
-              <p className="dark:text-gray-300">
-                Transport: {ticket.transportType}
-              </p>
-              <p className="dark:text-gray-300">৳{ticket.price}</p>
+
+              <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1 mt-2">
+                <p>Transport: {ticket.transportType}</p>
+                <p>৳{ticket.price}</p>
+              </div>
 
               <Link
                 to={`/tickets/${ticket._id}`}
-                className="btn btn-sm btn-primary w-full mt-2"
+                className="btn btn-sm btn-primary w-full mt-5"
               >
                 See Details
               </Link>
             </div>
           </div>
+
+          //card end
         ))}
       </div>
 

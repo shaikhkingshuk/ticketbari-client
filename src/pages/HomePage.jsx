@@ -17,9 +17,9 @@ export const HomePage = () => {
         setLoading(true);
 
         const [adsRes, latestRes] = await Promise.all([
-          fetch("https://ticketbari-server.onrender.com/homepage/ads"),
+          fetch("https://ticketbari-server-1.onrender.com/homepage/ads"),
           fetch(
-            "https://ticketbari-server.onrender.com/homepage/latest-tickets",
+            "https://ticketbari-server-1.onrender.com/homepage/latest-tickets",
           ),
         ]);
 
@@ -71,18 +71,38 @@ export const HomePage = () => {
       </Swiper>
 
       {/* ADVERTISEMENT SECTION */}
-      <section className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-6">Featured Tickets</h2>
+      <h2 className="text-3xl font-bold mb-10 text-gray-900 dark:text-white text-center">
+        Advertised Tickets
+      </h2>
+      <section className="relative overflow-hidden py-16">
+        {/* Background Gradient */}
+        <div
+          className="
+      absolute inset-0
+      bg-linear-to-br
+      from-blue-50 via-indigo-50 to-purple-100
+      dark:from-zinc-900 dark:via-zinc-950 dark:to-black
+    "
+        />
 
-        {advertisedTickets.length === 0 ? (
-          <p className="text-gray-500">No featured tickets available.</p>
-        ) : (
-          <div className="grid md:grid-cols-3 gap-6">
-            {advertisedTickets.map((ticket) => (
-              <TicketCard key={ticket._id} ticket={ticket} />
-            ))}
-          </div>
-        )}
+        {/* Glow Effects */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-3xl animate-pulse" />
+
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4">
+          {advertisedTickets.length === 0 ? (
+            <p className="text-center text-gray-500 dark:text-gray-400">
+              No featured tickets available.
+            </p>
+          ) : (
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6 lg:gap-10">
+              {advertisedTickets.map((ticket) => (
+                <TicketCard key={ticket._id} ticket={ticket} />
+              ))}
+            </div>
+          )}
+        </div>
       </section>
 
       {/* LATEST TICKETS */}
@@ -92,7 +112,7 @@ export const HomePage = () => {
         {latestTickets.length === 0 ? (
           <p className="text-gray-500">No tickets available.</p>
         ) : (
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2 gap-6">
             {latestTickets.map((ticket) => (
               <TicketCard key={ticket._id} ticket={ticket} />
             ))}
@@ -184,28 +204,40 @@ export const HomePage = () => {
 
 const TicketCard = ({ ticket }) => {
   return (
-    <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+    <div
+      className="flex flex-col overflow-hidden rounded-xl border border-zinc-300 dark:border-zinc-700
+  bg-white dark:bg-zinc-900
+  shadow-sm hover:shadow-lg transition-all duration-300"
+    >
       <img
         src={ticket.image}
         alt={ticket.title}
         className="h-48 w-full object-cover"
       />
-      <div className="p-4 space-y-2">
-        <h3 className="font-semibold text-lg">{ticket.title}</h3>
-        <p>Price: ৳{ticket.price}</p>
-        <p>Available: {ticket.quantity}</p>
-        <p>Transport: {ticket.transportType}</p>
-        <p className="text-sm text-gray-500">
+
+      <div className="p-5 flex flex-col grow">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+          {ticket.title}
+        </h3>
+
+        <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1 mt-2">
+          <p>Price: ৳{ticket.price}</p>
+          <p>Available: {ticket.quantity}</p>
+          <p>Transport: {ticket.transportType}</p>
+        </div>
+
+        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
           <span className="font-medium">Perks:</span>{" "}
           {Array.isArray(ticket.perks) && ticket.perks.length > 0
             ? ticket.perks.join(", ")
             : "No perks"}
         </p>
+
         <Link
           to={`/tickets/${ticket._id}`}
-          className="inline-block mt-3 text-blue-600 font-semibold"
+          className="btn btn-sm btn-primary w-full mt-5"
         >
-          See details →
+          See Details
         </Link>
       </div>
     </div>

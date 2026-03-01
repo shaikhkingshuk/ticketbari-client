@@ -10,7 +10,7 @@ const CheckoutForm = ({ booking, close }) => {
 
   const handlePay = async () => {
     const res = await fetch(
-      "https://ticketbari-server.onrender.com/create-payment-intent",
+      "https://ticketbari-server-1.onrender.com/create-payment-intent",
       {
         method: "POST",
         headers: {
@@ -34,7 +34,7 @@ const CheckoutForm = ({ booking, close }) => {
 
     if (result.paymentIntent.status === "succeeded") {
       await fetch(
-        `https://ticketbari-server.onrender.com/bookings/pay/${booking._id}`,
+        `https://ticketbari-server-1.onrender.com/bookings/pay/${booking._id}`,
         {
           method: "PATCH",
           headers: {

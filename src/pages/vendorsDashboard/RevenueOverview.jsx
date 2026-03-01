@@ -24,7 +24,7 @@ const RevenueOverview = () => {
     if (!user?.email) return;
 
     fetch(
-      `https://ticketbari-server.onrender.com/vendor/revenue-overview?email=${user.email}`,
+      `https://ticketbari-server-1.onrender.com/vendor/revenue-overview?email=${user.email}`,
       {
         headers: {
           authorization: `Bearer ${user.accessToken}`,

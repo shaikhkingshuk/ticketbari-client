@@ -19,7 +19,7 @@ const MyBookedTickets = () => {
     if (!user?.email) return;
 
     fetch(
-      `https://ticketbari-server.onrender.com/bookedTickets/user/${user.email}`,
+      `https://ticketbari-server-1.onrender.com/bookedTickets/user/${user.email}`,
       {
         headers: {
           authorization: `Bearer ${user.accessToken}`,
@@ -35,7 +35,7 @@ const MyBookedTickets = () => {
 
   const handleCheckout = async (booking) => {
     const res = await fetch(
-      "https://ticketbari-server.onrender.com/create-checkout-session",
+      "https://ticketbari-server-1.onrender.com/create-checkout-session",
       {
         method: "POST",
         headers: {
@@ -75,48 +75,59 @@ const MyBookedTickets = () => {
           const expired = isExpired(ticket.departureDateTime);
 
           return (
+            //card start
             <div
               key={b._id}
-              className="border rounded-xl bg-white dark:bg-zinc-700 shadow"
+              className="flex flex-col overflow-hidden rounded-xl 
+  border border-zinc-300 dark:border-zinc-700
+  bg-white dark:bg-zinc-900
+  shadow-sm hover:shadow-lg transition-all duration-300"
             >
+              {/* IMAGE */}
               <img
                 src={ticket.image}
-                className="h-44 w-full object-cover rounded-t-xl"
+                alt={b.title}
+                className="h-48 w-full object-cover"
               />
 
-              <div className="p-4 space-y-2">
-                <h3 className="font-semibold text-lg">{b.title}</h3>
+              {/* CONTENT */}
+              <div className="p-5 flex flex-col grow">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  {b.title}
+                </h3>
 
-                <p className="text-sm">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                   {ticket.from} → {ticket.to}
                 </p>
 
-                <p>Quantity: {b.bookedQuantity}</p>
-                <p>Total Price: ৳ {b.price * b.bookedQuantity}</p>
-
-                <p className="text-sm">
-                  Departure:{" "}
-                  {new Date(ticket.departureDateTime).toLocaleString()}
-                </p>
+                <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1 mt-2">
+                  <p>Quantity: {b.bookedQuantity}</p>
+                  <p>Total Price: ৳ {b.price * b.bookedQuantity}</p>
+                  <p>
+                    Departure:{" "}
+                    {new Date(ticket.departureDateTime).toLocaleString()}
+                  </p>
+                </div>
 
                 {/* STATUS */}
                 <span
-                  className={`badge ${
-                    b.status === "pending"
-                      ? "badge-warning"
-                      : b.status === "accepted"
-                        ? "badge-success"
-                        : b.status === "paid"
-                          ? "badge-info"
-                          : "badge-error"
-                  }`}
+                  className={`mt-3 self-start px-3 py-1 text-xs font-semibold rounded-full
+        ${
+          b.status === "pending"
+            ? "bg-yellow-100 text-yellow-700"
+            : b.status === "accepted"
+              ? "bg-green-100 text-green-700"
+              : b.status === "paid"
+                ? "bg-blue-100 text-blue-700"
+                : "bg-red-100 text-red-700"
+        }`}
                 >
                   {b.status}
                 </span>
 
                 {/* COUNTDOWN */}
                 {b.status !== "rejected" && !expired && (
-                  <div className="text-sm text-blue-600">
+                  <div className="text-sm text-blue-600 dark:text-blue-400 mt-2">
                     <Countdown date={new Date(ticket.departureDateTime)} />
                   </div>
                 )}
@@ -125,17 +136,21 @@ const MyBookedTickets = () => {
                 {b.status === "accepted" && !expired && (
                   <button
                     onClick={() => handleCheckout(b)}
-                    className="btn btn-primary btn-sm w-full mt-2"
+                    className="btn btn-sm btn-primary w-full mt-4"
                   >
                     Pay Now
                   </button>
                 )}
 
                 {expired && (
-                  <p className="text-red-500 text-sm">Departure time passed</p>
+                  <p className="text-red-500 text-sm mt-2">
+                    Departure time passed
+                  </p>
                 )}
               </div>
             </div>
+
+            //card end
           );
         })}
       </div>

@@ -6,7 +6,7 @@ import useTheme from "../hooks/useTheme";
 
 export const TicketDetails = () => {
   const { id } = useParams();
-  const { user } = useContext(AuthContext);
+  const { user, role } = useContext(AuthContext);
   const { theme } = useTheme();
 
   const [ticket, setTicket] = useState(null);
@@ -14,14 +14,14 @@ export const TicketDetails = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    fetch(`https://ticketbari-server.onrender.com/tickets/${id}`, {
+    fetch(`https://ticketbari-server-1.onrender.com/tickets/${id}`, {
       headers: {
         authorization: `Bearer ${user.accessToken}`,
       },
     })
       .then((res) => res.json())
       .then((data) => setTicket(data));
-  }, [id]);
+  }, [id, user?.accessToken]);
 
   if (!ticket) return null;
 
@@ -44,14 +44,17 @@ export const TicketDetails = () => {
       userName: user.displayName,
     };
 
-    const res = await fetch("https://ticketbari-server.onrender.com/bookings", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${user.accessToken}`,
+    const res = await fetch(
+      "https://ticketbari-server-1.onrender.com/bookings",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${user.accessToken}`,
+        },
+        body: JSON.stringify(bookingData),
       },
-      body: JSON.stringify(bookingData),
-    });
+    );
 
     if (res.ok) {
       toast.success("Booking successful");
@@ -110,7 +113,13 @@ export const TicketDetails = () => {
 
           <button
             disabled={disableBook}
-            onClick={() => setShowModal(true)}
+            onClick={() => {
+              if (role !== "user") {
+                toast.error("You must login as a user to book tickets");
+                return;
+              }
+              setShowModal(true);
+            }}
             className="mt-4 w-full btn btn-primary disabled:opacity-50"
           >
             Book Now

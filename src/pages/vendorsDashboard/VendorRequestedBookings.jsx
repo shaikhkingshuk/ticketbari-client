@@ -10,7 +10,7 @@ const VendorRequestedBookings = () => {
     if (!user?.email) return;
 
     fetch(
-      `https://ticketbari-server.onrender.com/vendor/bookings?email=${user.email}`,
+      `https://ticketbari-server-1.onrender.com/vendor/bookings?email=${user.email}`,
       {
         headers: {
           authorization: `Bearer ${user.accessToken}`,
@@ -24,7 +24,7 @@ const VendorRequestedBookings = () => {
 
   const handleAction = async (id, action) => {
     const res = await fetch(
-      `https://ticketbari-server.onrender.com/bookings/${action}/${id}`,
+      `https://ticketbari-server-1.onrender.com/bookings/${action}/${id}`,
       {
         method: "PATCH",
         headers: {

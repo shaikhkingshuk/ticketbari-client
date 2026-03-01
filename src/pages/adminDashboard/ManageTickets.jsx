@@ -7,7 +7,7 @@ const ManageTickets = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch("https://ticketbari-server.onrender.com/admin/tickets", {
+    fetch("https://ticketbari-server-1.onrender.com/admin/tickets", {
       headers: {
         authorization: `Bearer ${user.accessToken}`,
       },
@@ -17,7 +17,7 @@ const ManageTickets = () => {
   }, []);
 
   const handleStatusChange = (id, status) => {
-    fetch(`https://ticketbari-server.onrender.com/admin/tickets/${id}`, {
+    fetch(`https://ticketbari-server-1.onrender.com/admin/tickets/${id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",

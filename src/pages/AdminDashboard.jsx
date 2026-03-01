@@ -36,6 +36,7 @@ export const AdminDashboard = () => {
         <nav className="flex flex-col gap-3 px-5">
           <NavLink
             to="/dashboard/admin"
+            end
             onClick={closeMenu}
             className={({ isActive }) =>
               `px-3 py-2 rounded ${
