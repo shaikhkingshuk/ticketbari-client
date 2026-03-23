@@ -37,11 +37,6 @@ export const Header = () => {
         toast.error(error.message);
       });
   };
-  if (loading) {
-    return (
-      <div className="h-16 flex items-center justify-center">Loading...</div>
-    );
-  }
 
   return (
     <nav className="relative">
@@ -92,7 +87,10 @@ export const Header = () => {
               checked={theme === "dark"}
               onChange={(e) => toggleTheme(e.target.checked)}
             />
-            {user ? (
+
+            {loading ? (
+              <div className="w-20 text-center text-sm text-gray-500">...</div>
+            ) : user ? (
               <div className="relative">
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}

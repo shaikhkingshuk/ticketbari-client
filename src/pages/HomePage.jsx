@@ -40,10 +40,6 @@ export const HomePage = () => {
     loadHomeData();
   }, []);
 
-  if (loading) {
-    return <div className="text-center py-20">Loading homepage...</div>;
-  }
-
   return (
     <div
       className={`space-y-20 max-w-7xl mx-auto mt-10 ${theme === "dark" ? "dark" : ""}`}
@@ -91,8 +87,12 @@ export const HomePage = () => {
 
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4">
-          {advertisedTickets.length === 0 ? (
-            <p className="text-center text-gray-500 dark:text-gray-400">
+          {loading ? (
+            <div className="flex justify-center py-10">
+              <span className="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+          ) : advertisedTickets.length === 0 ? (
+            <p className="text-center text-gray-500 dark:text-gray-400 py-10">
               No featured tickets available.
             </p>
           ) : (
@@ -109,8 +109,14 @@ export const HomePage = () => {
       <section className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold mb-6">Latest Tickets</h2>
 
-        {latestTickets.length === 0 ? (
-          <p className="text-gray-500">No tickets available.</p>
+        {loading ? (
+          <div className="flex justify-center py-10">
+            <span className="loading loading-spinner loading-lg text-primary"></span>
+          </div>
+        ) : latestTickets.length === 0 ? (
+          <p className="text-gray-500 text-center py-10">
+            No tickets available.
+          </p>
         ) : (
           <div className="grid md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2 gap-6">
             {latestTickets.map((ticket) => (
