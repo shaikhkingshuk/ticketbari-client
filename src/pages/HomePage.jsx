@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import useTheme from "../hooks/useTheme";
-import { motion } from "motion/react";
 import { ShieldCheck, CreditCard, Zap } from "lucide-react";
 import chittagong from "../assets/chittagong.jpg";
 import coxsbazar from "../assets/coxsbazar.jpg";
@@ -70,20 +69,10 @@ export const HomePage = () => {
         ))}
       </Swiper>
       {/* ADVERTISEMENT SECTION */}
-      <motion.h2
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2 }}
-        className="text-3xl font-bold mb-10 text-gray-900 dark:text-white text-center"
-      >
+      <h2 className="text-3xl font-bold mb-10 text-gray-900 dark:text-white text-center">
         Advertised Tickets
-      </motion.h2>
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2 }}
-        className="relative py-16"
-      >
+      </h2>
+      <section className="relative py-16">
         {/* Glass Background Wrapper */}
         <div className="absolute inset-0 backdrop-blur-xl bg-white/30 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-none" />
 
@@ -121,7 +110,7 @@ export const HomePage = () => {
             </div>
           )}
         </div>
-      </motion.section>
+      </section>
       {/* LATEST TICKETS */}
       <section className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold mb-6">Latest Tickets</h2>
@@ -265,7 +254,7 @@ export const HomePage = () => {
                 img: rangpur,
               },
             ].map((item, i) => (
-              <motion.div
+              <div
                 key={i}
                 className="
     rounded-2xl overflow-hidden 
@@ -295,7 +284,7 @@ export const HomePage = () => {
                     {item.route}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
