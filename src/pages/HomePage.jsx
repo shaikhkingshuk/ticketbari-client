@@ -4,6 +4,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import useTheme from "../hooks/useTheme";
+import { motion } from "motion/react";
+import { ShieldCheck, CreditCard, Zap } from "lucide-react";
+import chittagong from "../assets/chittagong.jpg";
+import coxsbazar from "../assets/coxsbazar.jpg";
+import rajshahi from "../assets/rajshahi.jpg";
+import rangpur from "../assets/rangpur.jpg";
+import sylhet from "../assets/sylhet.jpg";
 
 export const HomePage = () => {
   const [advertisedTickets, setAdvertisedTickets] = useState([]);
@@ -15,7 +22,6 @@ export const HomePage = () => {
     const loadHomeData = async () => {
       try {
         setLoading(true);
-
         const [adsRes, latestRes] = await Promise.all([
           fetch("https://ticketbari-server-1.onrender.com/homepage/ads"),
           fetch(
@@ -41,9 +47,7 @@ export const HomePage = () => {
   }, []);
 
   return (
-    <div
-      className={`space-y-20 max-w-7xl mx-auto mt-10 ${theme === "dark" ? "dark" : ""}`}
-    >
+    <div className={`space-y-20 mx-auto ${theme === "dark" ? "dark" : ""}`}>
       {/* HERO SECTION */}
       <Swiper
         modules={[Autoplay]}
@@ -65,25 +69,26 @@ export const HomePage = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-
       {/* ADVERTISEMENT SECTION */}
-      <h2 className="text-3xl font-bold mb-10 text-gray-900 dark:text-white text-center">
+      <motion.h2
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+        className="text-3xl font-bold mb-10 text-gray-900 dark:text-white text-center"
+      >
         Advertised Tickets
-      </h2>
-      <section className="relative overflow-hidden py-16">
-        {/* Background Gradient */}
-        <div
-          className="
-      absolute inset-0
-      bg-linear-to-br
-      from-blue-50 via-indigo-50 to-purple-100
-      dark:from-zinc-900 dark:via-zinc-950 dark:to-black
-    "
-        />
+      </motion.h2>
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2 }}
+        className="relative py-16"
+      >
+        {/* Glass Background Wrapper */}
+        <div className="absolute inset-0 backdrop-blur-xl bg-white/30 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-none" />
 
-        {/* Glow Effects */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-400/20 dark:bg-blue-600/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-400/20 dark:bg-purple-600/10 rounded-full blur-3xl animate-pulse" />
+        {/* Optional soft gradient (very subtle, not AI-looking) */}
+        <div className="absolute inset-0 bg-linear-to-br from-white/40 via-transparent to-white/10 dark:from-white/5 dark:to-transparent" />
 
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4">
@@ -98,13 +103,25 @@ export const HomePage = () => {
           ) : (
             <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6 lg:gap-10">
               {advertisedTickets.map((ticket) => (
-                <TicketCard key={ticket._id} ticket={ticket} />
+                <div
+                  key={ticket._id}
+                  className=" rounded-2xl 
+    backdrop-blur-lg 
+    bg-white/40 dark:bg-white/10 
+    border border-white/30 dark:border-white/10 
+    shadow-md
+
+    transform transition-all duration-300 ease-out
+    hover:-translate-y-2 hover:scale-[1.02]
+    hover:shadow-xl hover:border-primary/30"
+                >
+                  <TicketCard ticket={ticket} />
+                </div>
               ))}
             </div>
           )}
         </div>
-      </section>
-
+      </motion.section>
       {/* LATEST TICKETS */}
       <section className="max-w-7xl mx-auto px-4">
         <h2 className="text-3xl font-bold mb-6">Latest Tickets</h2>
@@ -120,53 +137,92 @@ export const HomePage = () => {
         ) : (
           <div className="grid md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2 gap-6">
             {latestTickets.map((ticket) => (
-              <TicketCard key={ticket._id} ticket={ticket} />
+              <TicketCard
+                key={ticket._id}
+                className="
+    rounded-2xl 
+    bg-white dark:bg-gray-800 
+    border border-gray-200 dark:border-gray-700 
+    shadow-md
+
+    transform transition-all duration-300 ease-out
+    hover:-translate-y-2 hover:scale-[1.02]
+    hover:shadow-xl hover:border-primary/30
+  "
+                ticket={ticket}
+              />
             ))}
           </div>
         )}
       </section>
 
       {/* EXTRA SECTION 1 */}
-      <section className="relative py-20 overflow-hidden">
-        {/* Gradient background */}
-        <div className="absolute inset-0 bg-linear-to-br from-blue-5y00 via-indigo-500 to-purple-500 dark:from-gray-900 dark:via-gray-800 dark:to-black" />
-
-        {/* Glow */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-purple-400/30 rounded-full blur-3xl animate-pulse" />
-
-        <div className="relative max-w-7xl mx-auto px-4 text-white">
-          <h2 className="text-4xl font-extrabold text-center mb-12">
-            Why Choose <span className="text-yellow-300">TicketBari?</span>
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          {/* Heading */}
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800 dark:text-gray-100">
+            Why Choose <span className="text-primary">TicketBari</span>
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          {/* Cards */}
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8 hover:border-primary/30">
             {[
               {
                 title: "Verified Vendors",
-                desc: "Every vendor is checked and approved by our admin team.",
-                icon: "✅",
+                desc: "Every vendor is reviewed and approved to ensure trust and quality.",
+                icon: ShieldCheck,
+                color: "text-green-500",
+                bg: "bg-green-500/10",
               },
               {
                 title: "Secure Payments",
-                desc: "Stripe-powered payments with full transaction safety.",
-                icon: "🔒",
+                desc: "Safe and reliable transactions powered by modern payment systems.",
+                icon: CreditCard,
+                color: "text-blue-500",
+                bg: "bg-blue-500/10",
               },
               {
                 title: "Instant Booking",
-                desc: "Book tickets instantly with real-time availability.",
-                icon: "⚡",
+                desc: "Real-time availability lets you book tickets instantly without delays.",
+                icon: Zap,
+                color: "text-purple-500",
+                bg: "bg-purple-500/10",
               },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center
-                     hover:scale-105 hover:bg-white/20 transition-all duration-300"
-              >
-                <div className="text-5xl mb-4 animate-bounce">{item.icon}</div>
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-200">{item.desc}</p>
-              </div>
-            ))}
+            ].map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={i}
+                  className="
+              rounded-2xl p-8 
+              bg-white/60 dark:bg-white/5 
+              backdrop-blur-lg
+              border border-gray-200/50 dark:border-white/10
+              shadow-sm hover:shadow-lg
+              transition duration-300
+              hover:-translate-y-1
+            "
+                >
+                  {/* Icon */}
+                  <div
+                    className={`
+                w-12 h-12 mb-4 flex items-center justify-center 
+                rounded-xl ${item.bg}
+              `}
+                  >
+                    <Icon className={`w-6 h-6 ${item.color}`} />
+                  </div>
+
+                  <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-100">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {item.desc}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -174,32 +230,72 @@ export const HomePage = () => {
       {/* EXTRA SECTION 2 */}
       <section className="py-20 bg-gray-200 dark:bg-gray-900 transition-colors">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-extrabold mb-4 text-gray-900 dark:text-white">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
             Popular Routes
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-10">
+          <p className="text-gray-600 dark:text-gray-400 mb-12">
             Most booked travel routes by our customers
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {[
-              "Dhaka → Cox’s Bazar",
-              "Dhaka → Chittagong",
-              "Dhaka → Sylhet",
-              "Dhaka → Rajshahi",
-              "Dhaka → Rangpur",
-            ].map((route, i) => (
-              <div
+              {
+                name: "Cox’s Bazar",
+                route: "Dhaka → Cox’s Bazar",
+                img: coxsbazar,
+              },
+              {
+                name: "Chittagong",
+                route: "Dhaka → Chittagong",
+                img: chittagong,
+              },
+              {
+                name: "Sylhet",
+                route: "Dhaka → Sylhet",
+                img: sylhet,
+              },
+              {
+                name: "Rajshahi",
+                route: "Dhaka → Rajshahi",
+                img: rajshahi,
+              },
+              {
+                name: "Rangpur",
+                route: "Dhaka → Rangpur",
+                img: rangpur,
+              },
+            ].map((item, i) => (
+              <motion.div
                 key={i}
-                className="px-6 py-4 rounded-full text-lg font-semibold
-                     bg-white dark:bg-gray-800
-                     text-gray-800 dark:text-gray-100
-                     shadow-md hover:shadow-xl
-                     hover:-translate-y-1 hover:scale-105
-                     transition-all duration-300"
+                className="
+    rounded-2xl overflow-hidden 
+    bg-white dark:bg-gray-800
+    shadow-md
+    border border-gray-200 dark:border-gray-700
+
+    transform transition-all duration-300 ease-out
+    hover:-translate-y-2 hover:shadow-xl hover:scale-[1.02]
+  "
               >
-                🚍 {route}
-              </div>
+                {/* Image */}
+                <div className="overflow-hidden">
+                  <img
+                    src={item.img}
+                    alt={item.name}
+                    className="w-full h-40 object-cover hover:scale-110 transition duration-500"
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="p-4 text-left">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                    {item.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {item.route}
+                  </p>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -211,16 +307,31 @@ export const HomePage = () => {
 const TicketCard = ({ ticket }) => {
   return (
     <div
-      className="flex flex-col overflow-hidden rounded-xl border border-zinc-300 dark:border-zinc-700
-  bg-white dark:bg-zinc-900
-  shadow-sm hover:shadow-lg transition-all duration-300"
-    >
-      <img
-        src={ticket.image}
-        alt={ticket.title}
-        className="h-48 w-full object-cover"
-      />
+      className="
+    flex flex-col overflow-hidden rounded-xl 
+    border border-zinc-300 dark:border-zinc-700
+    bg-white dark:bg-zinc-900
+    shadow-sm
 
+    transform transition-all duration-300 ease-out
+    hover:-translate-y-2 hover:scale-[1.02]
+    hover:shadow-xl hover:border-primary/30
+  "
+    >
+      {/* Image */}
+      <div className="overflow-hidden">
+        <img
+          src={ticket.image}
+          alt={ticket.title}
+          className="
+        h-48 w-full object-cover
+        transition-transform duration-500 ease-out
+        hover:scale-110
+      "
+        />
+      </div>
+
+      {/* Content */}
       <div className="p-5 flex flex-col grow">
         <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
           {ticket.title}
@@ -241,7 +352,11 @@ const TicketCard = ({ ticket }) => {
 
         <Link
           to={`/tickets/${ticket._id}`}
-          className="btn btn-sm btn-primary w-full mt-5"
+          className="
+        btn btn-sm btn-primary w-full mt-5
+        transition-all duration-300
+        hover:scale-[1.02]
+      "
         >
           See Details
         </Link>

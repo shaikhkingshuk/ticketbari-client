@@ -40,112 +40,116 @@ export const Header = () => {
 
   return (
     <nav className="relative">
-      <div className="mx-auto max-w-7xl pr-6 pl-2 b-2 bg-blue-100 dark:bg-blue-600 rounded-full mt-2">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-0">
-            <button
-              className="md:hidden text-2xl text-black pl-3"
-              onClick={() => setOpen(!open)}
-            >
-              ☰
-            </button>
-            <img src={logo} alt="ticketbari logo" className="w-15" />
-            <span className="hidden sm:inline text-xl font-bold text-zinc-900 dark:text-zinc-50">
-              TicketBari
-            </span>
-          </div>
+      <div className="mx-auto pr-6 pl-2 b-2">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex h-16 items-center justify-between">
+            <div className="flex items-center gap-0">
+              <button
+                className="md:hidden text-2xl text-black pl-3"
+                onClick={() => setOpen(!open)}
+              >
+                ☰
+              </button>
+              <img src={logo} alt="ticketbari logo" className="w-15" />
+              <span className="hidden sm:inline text-xl font-bold text-zinc-900 dark:text-zinc-50">
+                TicketBari
+              </span>
+            </div>
 
-          <div className="hidden md:flex items-center gap-6">
-            <Link
-              to="/"
-              className="text-gray-600 dark:text-zinc-50 hover:text-black"
-            >
-              Home
-            </Link>
-            <Link
-              to="/allTickets"
-              className="text-gray-600 dark:text-zinc-50 hover:text-black"
-            >
-              All Tickets
-            </Link>
-
-            {user && dashboardPath && (
+            <div className="hidden md:flex items-center gap-6">
               <Link
-                to={dashboardPath}
+                to="/"
                 className="text-gray-600 dark:text-zinc-50 hover:text-black"
               >
-                Dashboard
+                Home
               </Link>
-            )}
-          </div>
+              <Link
+                to="/allTickets"
+                className="text-gray-600 dark:text-zinc-50 hover:text-black"
+              >
+                All Tickets
+              </Link>
 
-          <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              value="dark"
-              className="toggle theme-controller mr-2 text-gray-600"
-              checked={theme === "dark"}
-              onChange={(e) => toggleTheme(e.target.checked)}
-            />
-
-            {loading ? (
-              <div className="w-20 text-center text-sm text-gray-500">...</div>
-            ) : user ? (
-              <div className="relative">
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-gray-300"
-                >
-                  <img
-                    src={
-                      user?.photoURL
-                        ? user.photoURL
-                        : "https://i.ibb.co/ZxQJk0K/user.png"
-                    }
-                    alt="user"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <span className="text-gray-700 hidden sm:inline">
-                    {user?.displayName}
-                  </span>
-                </button>
-
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-4 w-40 bg-blue-100 dark:bg-blue-600 rounded-md shadow-md z-50">
-                    <Link
-                      to={dashboardPath}
-                      onClick={closeDropdown}
-                      className="block px-4 py-2 hover:bg-blue-800"
-                    >
-                      Profile
-                    </Link>
-
-                    <button
-                      onClick={() => {
-                        closeDropdown();
-                        handleLogout();
-                      }}
-                      className="w-full text-left px-4 py-2 hover:bg-blue-800"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex gap-3">
-                <Link to="/login" className="rounded-md border px-4 py-1.5">
-                  Login
-                </Link>
-
+              {user && dashboardPath && (
                 <Link
-                  to="/signup"
-                  className="rounded-md bg-blue-600 px-4 py-1.5 text-white"
+                  to={dashboardPath}
+                  className="text-gray-600 dark:text-zinc-50 hover:text-black"
                 >
-                  Sign Up
+                  Dashboard
                 </Link>
-              </div>
-            )}
+              )}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                value="dark"
+                className="toggle theme-controller mr-2 text-gray-600"
+                checked={theme === "dark"}
+                onChange={(e) => toggleTheme(e.target.checked)}
+              />
+
+              {loading ? (
+                <div className="w-20 text-center text-sm text-gray-500">
+                  ...
+                </div>
+              ) : user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-gray-300"
+                  >
+                    <img
+                      src={
+                        user?.photoURL
+                          ? user.photoURL
+                          : "https://i.ibb.co/ZxQJk0K/user.png"
+                      }
+                      alt="user"
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <span className="text-gray-700 hidden sm:inline">
+                      {user?.displayName}
+                    </span>
+                  </button>
+
+                  {dropdownOpen && (
+                    <div className="absolute right-0 mt-4 w-40 bg-blue-100 dark:bg-blue-600 rounded-md shadow-md z-50">
+                      <Link
+                        to={dashboardPath}
+                        onClick={closeDropdown}
+                        className="block px-4 py-2 hover:bg-blue-800"
+                      >
+                        Profile
+                      </Link>
+
+                      <button
+                        onClick={() => {
+                          closeDropdown();
+                          handleLogout();
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-blue-800"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex gap-3">
+                  <Link to="/login" className="rounded-md border px-4 py-1.5">
+                    Login
+                  </Link>
+
+                  <Link
+                    to="/signup"
+                    className="rounded-md bg-blue-600 px-4 py-1.5 text-white"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
